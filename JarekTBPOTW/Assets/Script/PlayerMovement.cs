@@ -1,29 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField]
-    public Vector2 _direction;
-    public Vector2 _velocity;
+    private Vector2 _direction;
+    private Vector2 _velocity;
     public Rigidbody2D _rb2D;
+    
+    //private bool _isPlanned = false;
+    //private bool _isInterracting = false;
+    
+
+    [Header("Jump")]
     private bool _isJumped = false;
     private bool _isGrounded = false;
+    public float fallMultiplier = 2.5f;
+    public float lowJumpMultiplier = 2f;
+    [Range(1f,10f)]
+    public float jumpForce;
+
+    [Header("Dash")]
+    private Vector2 dashDir;
+    public float dashForce;
+    public float dashDuration;
+    public float chronoDash;
     private bool _isDashed = false;
-    private bool _isPlanned = false;
-    private bool _isInterracting = false;
+    private bool _canDash = false;
 
     [Header("Ground Detection")]
     public LayerMask groundLayer;
     public Vector2 groundCheckerSize = Vector2.one;
     public Transform groundCheckerTransform;
 
-    [SerializeField]
-    public float currentSpeed;
+    [Header("Speed")]
     public float moveSpeed;
-    public float airSpeed;
     public float boostSpeed;
     public enum States
     {
@@ -31,6 +44,12 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public States currentStates = States.ILDE;
+
+    private void Awake()
+    {
+        _rb2D = GetComponent<Rigidbody2D>();
+
+    }
     void Start()
     {
         _rb2D.freezeRotation = true;
@@ -38,17 +57,18 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        OnStatesUpdate();
         Collider2D ground = Physics2D.OverlapBox(groundCheckerTransform.position, groundCheckerSize, 0f, groundLayer);
 
         if (ground != null)
         {
             _isGrounded = true;
+            _canDash = true;
         }
         else
-        {
+        {  
             _isGrounded = false;
         }
+        OnStatesUpdate();
     }
 
     private void OnDrawGizmos()
@@ -73,13 +93,16 @@ public class PlayerMovement : MonoBehaviour
             case States.ILDE: 
                 break;
             case States.RUN:
-                currentSpeed = moveSpeed;
                 break;
             case States.JUMP:
-                currentSpeed = airSpeed;
-                _rb2D.velocity = new Vector2(_rb2D.velocity.x, 3f);
+                _rb2D.velocity = new Vector2(_rb2D.velocity.x,jumpForce);
                 break;
-            case States.DASH: 
+            case States.DASH:
+                dashDir = _direction;
+                chronoDash = 0f;
+                _rb2D.gravityScale = 0f;
+                _canDash = false;
+                _isDashed = false;
                 break;
             case States.FLY: 
                 break;
@@ -99,11 +122,16 @@ public class PlayerMovement : MonoBehaviour
                 {
                     TransitionToStates(States.JUMP);
                 }
+                if (_canDash && _isDashed)
+                {
+                    TransitionToStates(States.DASH);    
+                }
                 break ;
             case States.RUN:
-                _velocity.x = _direction.x * currentSpeed;
+                _velocity.x = _direction.x * moveSpeed;
                 _velocity.y = _rb2D.velocity.y;
                 _rb2D.velocity = _velocity;
+
                 if (_direction.magnitude == 0f)
                 { 
                     TransitionToStates(States.ILDE); 
@@ -112,12 +140,32 @@ public class PlayerMovement : MonoBehaviour
                 {
                     TransitionToStates(States.JUMP);
                 }
+                if (_canDash && _isDashed)
+                {
+                    TransitionToStates(States.DASH);
+                }
                 break ;
             case States.JUMP:
-                _velocity.x = _direction.x * currentSpeed;
+                _velocity.x = _direction.x * moveSpeed;
+                //_velocity.x = dashForce;
                 _velocity.y = _rb2D.velocity.y;
                 _rb2D.velocity = _velocity;
-                if (_isGrounded)
+
+                if(_rb2D.velocity.y < 0f)
+                {
+                    _rb2D.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1f) * Time.deltaTime;
+                }
+                else if (_rb2D.velocity.y > 0f && !_isJumped)
+                {
+                    _rb2D.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1f) * Time.deltaTime;
+                }
+
+                if (_canDash && _isDashed)
+                {
+                    TransitionToStates(States.DASH);
+                }
+
+                if (_isGrounded && _rb2D.velocity.y == 0f)
                 {
                     if (_direction.magnitude > 0f)
                     {
@@ -130,12 +178,22 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break;
             case States.DASH:
+                chronoDash += Time.deltaTime;
+                _rb2D.velocity = new Vector2(Mathf.Clamp(dashDir.x,-1,1),Mathf.Clamp(dashDir.y,-1,1)) * dashForce;
+                if(_isJumped)
+                {
+                    TransitionToStates(States.JUMP);
+                } 
+                else if(chronoDash > dashDuration)
+                {
+                    TransitionToStates(States.ILDE);
+                }
+                
                 break;
             case States.FLY:
                 break;
         }
     }
-
     public void OnStatesExit()
     {
         switch (currentStates)
@@ -147,6 +205,8 @@ public class PlayerMovement : MonoBehaviour
             case States.JUMP:
                 break;
             case States.DASH:
+                _rb2D.velocity = Vector2.zero;
+                _rb2D.gravityScale = 1f;
                 break;
             case States.FLY:
                 break;
@@ -170,7 +230,7 @@ public class PlayerMovement : MonoBehaviour
             case InputActionPhase.Canceled:
                 _direction = Vector2.zero;
                 break;
-        }
+        }   
     }
 
     public void Dash(InputAction.CallbackContext context)
@@ -191,10 +251,13 @@ public class PlayerMovement : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Performed:
+
                 _isJumped = true;
                 break;
             case InputActionPhase.Canceled:
+                //Debug.Log("je saute");
                 _isJumped = false;
+
                 break;
         }
     }
@@ -204,10 +267,10 @@ public class PlayerMovement : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Performed:
-                _isInterracting = true;
+                //_isInterracting = true;
                 break;
             case InputActionPhase.Canceled:
-                _isInterracting = false;
+                //_isInterracting = false;
                 break;
         }
     }
