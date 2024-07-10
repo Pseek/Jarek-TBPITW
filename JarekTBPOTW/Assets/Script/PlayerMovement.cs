@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Speed")]
     public float moveSpeed;
-    public float boostSpeed;
+    public float currentSpeed;
     public enum States
     {
         ILDE, RUN, JUMP, DASH, FALL, FLY
@@ -93,6 +93,7 @@ public class PlayerMovement : MonoBehaviour
             case States.ILDE: 
                 break;
             case States.RUN:
+                currentSpeed = moveSpeed;
                 break;
             case States.JUMP:
                 _rb2D.velocity = new Vector2(_rb2D.velocity.x,jumpForce);
@@ -128,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break ;
             case States.RUN:
-                _velocity.x = _direction.x * moveSpeed;
+                _velocity.x = _direction.x * currentSpeed;
                 _velocity.y = _rb2D.velocity.y;
                 _rb2D.velocity = _velocity;
 
@@ -146,8 +147,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break ;
             case States.JUMP:
-                _velocity.x = _direction.x * moveSpeed;
-                //_velocity.x = dashForce;
+                _velocity.x = _direction.x * currentSpeed;
                 _velocity.y = _rb2D.velocity.y;
                 _rb2D.velocity = _velocity;
 
@@ -180,8 +180,9 @@ public class PlayerMovement : MonoBehaviour
             case States.DASH:
                 chronoDash += Time.deltaTime;
                 _rb2D.velocity = new Vector2(Mathf.Clamp(dashDir.x,-1,1),Mathf.Clamp(dashDir.y,-1,1)) * dashForce;
-                if(_isJumped)
+                if(_isJumped && _isGrounded)
                 {
+                    currentSpeed = dashForce;
                     TransitionToStates(States.JUMP);
                 } 
                 else if(chronoDash > dashDuration)

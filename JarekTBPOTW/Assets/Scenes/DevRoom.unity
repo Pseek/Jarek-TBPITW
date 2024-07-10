@@ -217,7 +217,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 692194869}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: a4184fd2d353cf846a1bd144a59e0f0a, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -423,7 +423,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 912066a716c2b9447976020c3aae695c, type: 2}
+  m_Material: {fileID: 6200000, guid: caf15dc1ae0452343ba7a8f009cc3efd, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -432,7 +432,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &1421884826
 MonoBehaviour:
@@ -451,7 +451,7 @@ MonoBehaviour:
   lowJumpMultiplier: 2.5
   jumpForce: 7
   dashForce: 20
-  dashDuration: 0.1
+  dashDuration: 0.2
   chronoDash: 0
   groundLayer:
     serializedVersion: 2
@@ -459,7 +459,7 @@ MonoBehaviour:
   groundCheckerSize: {x: 0.1, y: 0.1}
   groundCheckerTransform: {fileID: 1285235625}
   moveSpeed: 5
-  boostSpeed: 0
+  currentSpeed: 0
   currentStates: 0
 --- !u!1 &1438604682
 GameObject:
