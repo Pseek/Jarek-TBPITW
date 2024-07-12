@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Animations;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
@@ -13,13 +10,15 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _velocity;
     public Rigidbody2D _rb2D;
     public float gravityPlane;
+    public bool _isInterracting;
+    public float fallDumpsterSpeed;
+    public bool canGetUp = false;
 
     [Header("Jump")]
     private bool _isJumped = false;
     private bool _isGrounded = false;
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
-    [Range(1f,10f)]
     public float jumpForce;
 
     [Header("Dash")]
@@ -37,7 +36,6 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 wallJumpForce;
     public float wallJumpDuration;
     public float wallJumpChrono;
-
 
     [Header("Ground Detection")]
     public LayerMask groundLayer;
@@ -104,7 +102,11 @@ public class PlayerMovement : MonoBehaviour
         {
             gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
-
+        if (_isJumped && canGetUp)
+        {
+            StartCoroutine(GetUpDumpster());
+            StopCoroutine(FallDumpster()); 
+        }
         OnStatesUpdate();
     }
 
@@ -148,8 +150,7 @@ public class PlayerMovement : MonoBehaviour
             case States.JUMP:
                 _rb2D.velocity = new Vector2(_rb2D.velocity.x,jumpForce);
                 break;
-            case States.FALL:
-                
+            case States.FALL:             
                 break;
             case States.WALLJUMP:
                 _rb2D.velocity = new Vector2(-_direction.x*wallJumpForce.x, wallJumpForce.y);
@@ -398,5 +399,42 @@ public class PlayerMovement : MonoBehaviour
                 _isJumped = false;
                 break;
         }
+    }
+
+    public void Interract(InputAction.CallbackContext context)
+    {
+        switch (context.phase)
+        {
+            case InputActionPhase.Performed:
+
+                _isInterracting = true;
+                break;
+            case InputActionPhase.Canceled:
+                _isInterracting = false;
+                break;
+        }
+    }
+
+    IEnumerator FallDumpster()
+    {
+        currentSpeed = fallDumpsterSpeed;
+        yield return new WaitForSeconds (0.5f);
+        currentSpeed = 0;
+        _rb2D.bodyType = RigidbodyType2D.Static;
+        canGetUp = true;
+    }
+
+    IEnumerator GetUpDumpster()
+    {
+        yield return new WaitForSeconds(1f);
+        canGetUp = false;
+        _rb2D.bodyType = RigidbodyType2D.Dynamic;
+        currentSpeed = moveSpeed; 
+        TransitionToStates(States.ILDE);
+        StopCoroutine(GetUpDumpster());
+    }
+    public void StartFallDumpster()
+    {   
+        StartCoroutine(FallDumpster()); 
     }
 }
