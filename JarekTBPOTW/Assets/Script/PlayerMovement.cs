@@ -8,12 +8,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Variable")]
     private Vector2 _direction;
     private Vector2 _velocity;
     public Rigidbody2D _rb2D;
-
-    public float _gravityPlane;
-    //private bool _isInterracting = false;
+    public float gravityPlane;
 
     [Header("Jump")]
     private bool _isJumped = false;
@@ -97,6 +96,15 @@ public class PlayerMovement : MonoBehaviour
             _isOnWall= false;
         }
 
+        if (_velocity.x < 0f)
+        {
+            gameObject.transform.localEulerAngles = new Vector3(0, 180, 0);
+        }
+        else if (_velocity.x > 0f)
+        {
+            gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
+        }
+
         OnStatesUpdate();
     }
 
@@ -130,15 +138,18 @@ public class PlayerMovement : MonoBehaviour
     {
         switch(currentStates)
         {
-            case States.ILDE: 
+            case States.ILDE:
+                _isJumped = false;
                 break;
             case States.RUN:
+                _isJumped = false;
                 currentSpeed = moveSpeed;
                 break;
             case States.JUMP:
                 _rb2D.velocity = new Vector2(_rb2D.velocity.x,jumpForce);
                 break;
             case States.FALL:
+                
                 break;
             case States.WALLJUMP:
                 _rb2D.velocity = new Vector2(-_direction.x*wallJumpForce.x, wallJumpForce.y);
@@ -156,12 +167,10 @@ public class PlayerMovement : MonoBehaviour
                 _isDashed = false;
                 break;
             case States.FLY:
-                _rb2D.gravityScale = -_gravityPlane;
+                _rb2D.gravityScale = -gravityPlane;
                 break;
-            
         }
     }
-
     public void OnStatesUpdate()
     {
         switch(currentStates) 
@@ -197,7 +206,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     TransitionToStates(States.DASH);
                 }
-                if (_rb2D.velocity.y < 0f)
+                if (_rb2D.velocity.y < 0f && !_isGrounded)
                 {
                     TransitionToStates(States.FALL);
                 }
@@ -211,7 +220,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     _rb2D.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1f) * Time.deltaTime;
                 } 
-                if (_rb2D.velocity.y < 0f)
+                if (_rb2D.velocity.y < 0f && !_isGrounded)
                 {
                     TransitionToStates(States.FALL);
                 }
@@ -276,12 +285,6 @@ public class PlayerMovement : MonoBehaviour
                 {
                     TransitionToStates(States.FALL);
                 }
-
-                if (_isOnWall && _direction.x != 0 && _isGrounded)
-                {
-                    TransitionToStates(States.WALLSLIDE);
-                }
-                
                 break;
             case States.DASH:
                 chronoDash += Time.deltaTime;
@@ -295,7 +298,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     TransitionToStates(States.ILDE);
                 }
-                if(_rb2D.velocity.y < 0f)
+                if(_rb2D.velocity.y < 0f && !_isGrounded)
                 {
                     TransitionToStates(States.FALL);
                 }
@@ -303,11 +306,22 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case States.FLY:
                 _velocity.x = _direction.x * currentSpeed;
-                _velocity.y = -_gravityPlane;
+                _velocity.y = -gravityPlane;
                 _rb2D.velocity = _velocity;
                 if (!_isJumped)
                 {
                     TransitionToStates(States.FALL);
+                }
+                if (_isGrounded)
+                {
+                    if (_direction.magnitude > 0f)
+                    {
+                        TransitionToStates(States.RUN);
+                    }
+                    if (_direction.magnitude == 0f)
+                    {
+                        TransitionToStates(States.ILDE);
+                    }
                 }
                 break;
         }
@@ -382,19 +396,6 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case InputActionPhase.Canceled:
                 _isJumped = false;
-                break;
-        }
-    }
-
-    public void Interract(InputAction.CallbackContext context)
-    {
-        switch (context.phase)
-        {
-            case InputActionPhase.Performed:
-                //_isInterracting = true;
-                break;
-            case InputActionPhase.Canceled:
-                //_isInterracting = false;
                 break;
         }
     }
