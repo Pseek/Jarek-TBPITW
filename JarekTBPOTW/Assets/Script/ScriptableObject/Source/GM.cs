@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 [CreateAssetMenu(fileName = "Gamemanager", menuName =("Gm"))]
@@ -7,15 +8,11 @@ using UnityEngine.SceneManagement;
 public class GM : ScriptableObject
 {
     public int nbrBAL_a_D;
-
+    public bool isWin = false;
+    
     public void AddBAL (int paper)
     {
         nbrBAL_a_D += paper;
-    }
-
-    public void CheckWin()
-    {
-        SceneManager.LoadScene("");
     }
 
     public void ChangesScene(string nameScene)
@@ -28,4 +25,13 @@ public class GM : ScriptableObject
         Application.Quit();
     }
 
+    public void TimeScaleZero()
+    {
+        Time.timeScale = 0;
+    }
+
+    public void TimeScaleOne()
+    {
+        Time.timeScale = 1;
+    }
 }

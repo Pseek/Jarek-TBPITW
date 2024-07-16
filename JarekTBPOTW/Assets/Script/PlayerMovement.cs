@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public Animator m_Animator;
     [Header("Variable")]
     private Vector2 _direction;
     private Vector2 _velocity;
@@ -16,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     public bool canGetUp = false;
     public bool isFallDumpster = false;
     public float buffSpeed;
+    public Animator m_Animator;
 
     [Header("Jump")]
     private bool _isJumped = false;
@@ -106,7 +106,6 @@ public class PlayerMovement : MonoBehaviour
         {
             gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
-
 
         OnStatesUpdate();
     }
@@ -456,6 +455,18 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case InputActionPhase.Canceled:
                 _isInterracting = false;
+                break;
+        }
+    }
+    public void OpenMap(InputAction.CallbackContext context)
+    {
+        switch (context.phase)
+        {
+            case InputActionPhase.Performed:
+                
+                break;
+            case InputActionPhase.Canceled:
+    
                 break;
         }
     }

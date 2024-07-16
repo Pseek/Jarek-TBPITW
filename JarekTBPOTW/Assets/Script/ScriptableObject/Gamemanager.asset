@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8436c16e32f662845bd20188536946ed, type: 3}
   m_Name: Gamemanager
   m_EditorClassIdentifier: 
-  BALaD: 0
+  nbrBAL_a_D: 0
+  isWin: 0
