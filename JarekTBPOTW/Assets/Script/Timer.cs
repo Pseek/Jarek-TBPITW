@@ -8,6 +8,7 @@ public class Timer : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI timerFinalText;
+    public TextMeshProUGUI timerSubmit;
     public float elapsedTime;
 
     // Update is called once per frame

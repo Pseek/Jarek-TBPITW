@@ -14,7 +14,8 @@ public class MailBox : MonoBehaviour
         {
             gM.AddBAL(1);
             anim.SetBool("BalAnim", true);
-            gameObject.GetComponent<BoxCollider2D>().enabled = false ;
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            
         }
     }
 }

@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using SimpleWaypointIndicators;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -12,11 +14,7 @@ public class TransitionRoom : MonoBehaviour
         if (collision.CompareTag("Player") && !collision.isTrigger)
         {
             virtualCam.SetActive(true);
-        }
-        if (collision.CompareTag("Bal") && !collision.isTrigger) 
-        {
-            Debug.Log("je suis actif");
-            collision.gameObject.SetActive(true);
+            gameObject.transform.Find("GrEnemyPoint").gameObject.SetActive(true);
         }
     }
 
@@ -25,10 +23,7 @@ public class TransitionRoom : MonoBehaviour
         if (collision.CompareTag("Player") && !collision.isTrigger)
         {
             virtualCam.SetActive(false);
-        }
-        if (collision.CompareTag("Bal") && !collision.isTrigger)
-        {
-            collision.gameObject.SetActive(false);
+            gameObject.transform.Find("GrEnemyPoint").gameObject.SetActive(false);
         }
     }
 }
