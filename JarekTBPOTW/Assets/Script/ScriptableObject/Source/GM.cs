@@ -9,6 +9,12 @@ public class GM : ScriptableObject
 {
     public int nbrBAL_a_D;
     public bool isWin = false;
+
+    public void RemoveBAL()
+    {
+        nbrBAL_a_D = 0;
+        isWin = false;
+    }
     
     public void AddBAL (int paper)
     {

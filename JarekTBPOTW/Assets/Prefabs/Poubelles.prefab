@@ -91,8 +91,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3103d6d595cdbe64aa733443d4f8b6ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pM: {fileID: 0}
   CdDumpster: 8
+  fullDumpster: {fileID: -400000195, guid: c02616bbaeeee6a4fae93fea94155b92, type: 3}
+  emptyDumpster: {fileID: 1418978559, guid: c02616bbaeeee6a4fae93fea94155b92, type: 3}
+  spriteRenderer: {fileID: 2510433497198640120}
 --- !u!1 &5883305526904806931
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,7 +168,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1371253958, guid: c02616bbaeeee6a4fae93fea94155b92, type: 3}
+  m_Sprite: {fileID: -400000195, guid: c02616bbaeeee6a4fae93fea94155b92, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

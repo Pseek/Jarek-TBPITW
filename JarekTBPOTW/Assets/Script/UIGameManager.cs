@@ -16,7 +16,10 @@ public class UIGameManager : MonoBehaviour
     public Sprite medailleNull;
     public Image medaillePosition;
 
-
+    private void Start()
+    {
+        Time.timeScale = 0f;
+    }
     public void Update()
     {
         if (gM.isWin)

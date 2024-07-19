@@ -9,7 +9,7 @@ public class EndCheck : MonoBehaviour
 
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && pM._isInterracting && gM.nbrBAL_a_D == 2)
+        if (collision.CompareTag("Player") && pM._isInterracting && gM.nbrBAL_a_D == 7)
         {
             gM.isWin = true;
         }

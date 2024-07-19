@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Variable")]
+    public StoreBumper sB;
     private Vector2 _direction;
     private Vector2 _velocity;
     public Rigidbody2D _rb2D;
@@ -18,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     public Animator m_Animator;
 
     [Header("Jump")]
-    private bool _isJumped = false;
+    public bool _isJumped = false;
     private bool _isGrounded = false;
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
@@ -30,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
     public float dashDuration;
     public float chronoDash;
     private bool _isDashed = false;
-    private bool _canDash = false;
+    public bool _canDash = false;
 
     [Header("WallJump")]
     private bool _isOnWall = false;
@@ -154,6 +155,7 @@ public class PlayerMovement : MonoBehaviour
                 _rb2D.velocity = new Vector2(_rb2D.velocity.x, jumpForce);
                 break;
             case States.FALL:
+                _isJumped = false;
                 m_Animator.SetFloat("VelocityY", 0.5f);
                 break;
             case States.FALLDUMPSTER:
@@ -176,8 +178,8 @@ public class PlayerMovement : MonoBehaviour
                 _isDashed = false;
                 break;
             case States.FLY:
+                //_rb2D.gravityScale = 0.2f;
                 m_Animator.SetFloat("VelocityY", 0.5f);
-                _rb2D.gravityScale = -gravityPlane;
                 break;
         }
     }
@@ -201,6 +203,10 @@ public class PlayerMovement : MonoBehaviour
                 if (isFallDumpster)
                 {
                     TransitionToStates(States.FALLDUMPSTER);
+                }
+                if (_rb2D.velocity.y < 0f && !_isGrounded)
+                {
+                    TransitionToStates(States.FALL);
                 }
                 break;
             case States.RUN:
@@ -290,7 +296,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break;
             case States.FALLDUMPSTER:
-                if (_isJumped && canGetUp && _rb2D.velocity.y == 0)
+                if (_isJumped && canGetUp && _isGrounded)
                 {
                     StartCoroutine(GetUpDumpster());
                     StopCoroutine(FallDumpster());
@@ -340,6 +346,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     TransitionToStates(States.FALLDUMPSTER);
                 }
+                if (_isOnWall && !_isGrounded && _direction.magnitude != 0f)
+                {
+                    TransitionToStates(States.WALLSLIDE);
+                }
                 break;
             case States.FLY:
                 _velocity.x = _direction.x * currentSpeed;
@@ -347,6 +357,11 @@ public class PlayerMovement : MonoBehaviour
                 _rb2D.velocity = _velocity;
                 if (!_isJumped)
                 {
+                    TransitionToStates(States.FALL);
+                }
+                if(sB.isStored)
+                {
+                    _rb2D.velocity = new Vector2(_rb2D.velocity.x, sB.bumperForce);
                     TransitionToStates(States.FALL);
                 }
                 if (isFallDumpster)
@@ -393,7 +408,6 @@ public class PlayerMovement : MonoBehaviour
                 _rb2D.gravityScale = 1f;
                 break;
             case States.FLY:
-                _rb2D.gravityScale = 1f;
                 break;
         }
     }
@@ -484,7 +498,6 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         canGetUp = false;
-        _direction.x = 1;
         currentSpeed = moveSpeed;
         StopCoroutine(GetUpDumpster());
     }
