@@ -9,11 +9,14 @@ public class GM : ScriptableObject
 {
     public int nbrBAL_a_D;
     public bool isWin = false;
-
+    public float elapsedTime;
+    public bool resetLevel;
     public void RemoveBAL()
     {
         nbrBAL_a_D = 0;
         isWin = false;
+        elapsedTime = 0;
+        resetLevel = true;
     }
     
     public void AddBAL (int paper)
@@ -40,4 +43,5 @@ public class GM : ScriptableObject
     {
         Time.timeScale = 1;
     }
+
 }

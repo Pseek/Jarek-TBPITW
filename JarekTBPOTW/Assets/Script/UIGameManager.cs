@@ -9,12 +9,12 @@ public class UIGameManager : MonoBehaviour
 {
     public GM gM;
     public UnityEvent CheckWin;
-    public Timer timer;
     public Sprite medailleDor;
     public Sprite medailleDargent;
     public Sprite medailleBronze;
     public Sprite medailleNull;
     public Image medaillePosition;
+    public Timer timer;
 
     private void Start()
     {
@@ -25,20 +25,21 @@ public class UIGameManager : MonoBehaviour
         if (gM.isWin)
         {
             CheckWin.Invoke();
+            timer.HighScore();
         }
-        if(timer.elapsedTime >= 60f)
+        if(gM.elapsedTime >= 60f)
         {
             medaillePosition.sprite = medailleNull;
         }
-        else if (timer.elapsedTime >= 45f)
+        else if (gM.elapsedTime >= 45f)
         {
             medaillePosition.sprite = medailleBronze;
         }
-        else if (timer.elapsedTime >= 30f)
+        else if (gM.elapsedTime >= 30f)
         {
             medaillePosition.sprite = medailleDargent;
         }
-        else if (timer.elapsedTime < 30f)
+        else if (gM.elapsedTime < 30f)
         {
             medaillePosition.sprite = medailleDor;
         }               

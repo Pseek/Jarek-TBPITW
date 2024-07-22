@@ -24,6 +24,9 @@ public class PlayerMovement : MonoBehaviour
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
     public float jumpForce;
+    public float coyoteTime;
+    private float _coyoteCounterTime;
+    private int _canCoyote;
 
     [Header("Dash")]
     private Vector2 dashDir;
@@ -32,7 +35,8 @@ public class PlayerMovement : MonoBehaviour
     public float chronoDash;
     private bool _isDashed = false;
     public bool _canDash = false;
-
+    public TrailRenderer _tRD;
+     
     [Header("WallJump")]
     private bool _isOnWall = false;
     public bool isSlinding;
@@ -55,6 +59,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Speed")]
     public float moveSpeed;
     public float currentSpeed;
+    public float decelSpeed;
+    public Vector2 decelDir;
+
     public enum States
     {
         ILDE, RUN, JUMP, DASH, FLY, WALLJUMP, WALLSLIDE, FALL, FALLDUMPSTER
@@ -142,10 +149,12 @@ public class PlayerMovement : MonoBehaviour
         switch (currentStates)
         {
             case States.ILDE:
+                _canCoyote = 0;
                 m_Animator.SetFloat("VelocityX", 0f);
                 _isJumped = false;
                 break;
             case States.RUN:
+                _canCoyote = 0;
                 m_Animator.SetFloat("VelocityX", 1f);
                 _isJumped = false;
                 currentSpeed = moveSpeed;
@@ -171,6 +180,7 @@ public class PlayerMovement : MonoBehaviour
                 currentSpeed = moveSpeed;
                 break;
             case States.DASH:
+                _tRD.emitting = true;
                 dashDir = _direction;
                 chronoDash = 0f;
                 _rb2D.gravityScale = 0f;
@@ -178,7 +188,7 @@ public class PlayerMovement : MonoBehaviour
                 _isDashed = false;
                 break;
             case States.FLY:
-                //_rb2D.gravityScale = 0.2f;
+     
                 m_Animator.SetFloat("VelocityY", 0.5f);
                 break;
         }
@@ -206,15 +216,29 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if (_rb2D.velocity.y < 0f && !_isGrounded)
                 {
+                    ++_canCoyote;
                     TransitionToStates(States.FALL);
                 }
                 break;
             case States.RUN:
-                _velocity.x = _direction.x * currentSpeed;
-                _velocity.y = _rb2D.velocity.y;
+                if (_direction.magnitude == 0f)
+                {
+                    currentSpeed -= Time.deltaTime * decelSpeed;
+                    currentSpeed = Mathf.Max(0f, currentSpeed);
+                    _velocity.x = decelDir.x * currentSpeed;
+                    _velocity.y = _rb2D.velocity.y;
+                }
+                else
+                {
+                    currentSpeed = moveSpeed;
+                    _velocity.x = _direction.x * currentSpeed;
+                    _velocity.y = _rb2D.velocity.y;
+                    decelDir = _direction;
+                }
+
                 _rb2D.velocity = _velocity;
 
-                if (_direction.magnitude == 0f)
+                if (currentSpeed == 0f)
                 {
                     TransitionToStates(States.ILDE);
                 }
@@ -228,11 +252,17 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if (_rb2D.velocity.y < 0f && !_isGrounded)
                 {
+                    ++_canCoyote;
                     TransitionToStates(States.FALL);
                 }
                 if (isFallDumpster)
                 {
                     TransitionToStates(States.FALLDUMPSTER);
+                }
+                if (sB.isStored)
+                {
+                    _rb2D.velocity = new Vector2(_rb2D.velocity.x, sB.bumperForce);
+                    TransitionToStates(States.FALL);
                 }
                 break;
             case States.JUMP:
@@ -260,19 +290,30 @@ public class PlayerMovement : MonoBehaviour
                 {
                     TransitionToStates(States.FALLDUMPSTER);
                 }
+                if (sB.isStored)
+                {
+                    _rb2D.velocity = new Vector2(_rb2D.velocity.x, sB.bumperForce);
+                    TransitionToStates(States.FALL);
+                }
                 break;
             case States.FALL:
                 _velocity.x = _direction.x * currentSpeed;
                 _velocity.y = _rb2D.velocity.y;
                 _rb2D.velocity = _velocity;
                 _rb2D.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1f) * Time.deltaTime;
+                _coyoteCounterTime += Time.deltaTime;
                 if (_canDash && _isDashed)
                 {
                     TransitionToStates(States.DASH);
                 }
-
-                if (_isJumped && !_isGrounded)
+                if (_coyoteCounterTime < coyoteTime && _isJumped && _canCoyote == 1)
                 {
+                    --_canCoyote;
+                    TransitionToStates(States.JUMP);
+                }
+                else if (_isJumped && !_isGrounded)
+                {
+                    _canCoyote = 0;
                     TransitionToStates(States.FLY);
                 }
                 if (_isOnWall && !_isGrounded && _direction.x != 0)
@@ -293,6 +334,11 @@ public class PlayerMovement : MonoBehaviour
                     {
                         TransitionToStates(States.ILDE);
                     }
+                }
+                if (sB.isStored)
+                {
+                    _rb2D.velocity = new Vector2(_rb2D.velocity.x, sB.bumperForce);
+                    TransitionToStates(States.FALL);
                 }
                 break;
             case States.FALLDUMPSTER:
@@ -325,6 +371,11 @@ public class PlayerMovement : MonoBehaviour
                 {
                     TransitionToStates(States.FALL);
                 }
+                if (sB.isStored)
+                {
+                    _rb2D.velocity = new Vector2(_rb2D.velocity.x, sB.bumperForce);
+                    TransitionToStates(States.FALL);
+                }
                 break;
             case States.DASH:
                 chronoDash += Time.deltaTime;
@@ -336,10 +387,6 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else if (chronoDash > dashDuration)
                 {
-                    TransitionToStates(States.ILDE);
-                }
-                if (_rb2D.velocity.y < 0f && !_isGrounded)
-                {
                     TransitionToStates(States.FALL);
                 }
                 if (isFallDumpster)
@@ -349,6 +396,11 @@ public class PlayerMovement : MonoBehaviour
                 if (_isOnWall && !_isGrounded && _direction.magnitude != 0f)
                 {
                     TransitionToStates(States.WALLSLIDE);
+                }
+                if (sB.isStored)
+                {
+                    _rb2D.velocity = new Vector2(_rb2D.velocity.x, sB.bumperForce);
+                    TransitionToStates(States.FALL);
                 }
                 break;
             case States.FLY:
@@ -394,6 +446,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case States.FALL:
                 m_Animator.SetFloat("VelocityY", 0f);
+                _coyoteCounterTime = 0f;
                 break;
             case States.FALLDUMPSTER:
                 m_Animator.SetBool("IsFallDumpster", false);
@@ -404,6 +457,7 @@ public class PlayerMovement : MonoBehaviour
                 _rb2D.velocity = Vector2.zero;
                 break;
             case States.DASH:
+                _tRD.emitting = false;
                 _rb2D.velocity = Vector2.zero;
                 _rb2D.gravityScale = 1f;
                 break;

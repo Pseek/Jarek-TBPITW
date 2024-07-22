@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StoreBumper : MonoBehaviour
-{
-    public Rigidbody2D _rb2D;
+{ 
     public PlayerMovement pM;
     public float bumperForce;
     public bool isStored;
@@ -14,7 +13,7 @@ public class StoreBumper : MonoBehaviour
         { 
             pM._canDash = true;
             isStored = true;
-            _rb2D.velocity = new Vector2(_rb2D.velocity.x, bumperForce);
+            collision.gameObject.GetComponent<PlayerMovement>().sB = this;
         }
     }
 

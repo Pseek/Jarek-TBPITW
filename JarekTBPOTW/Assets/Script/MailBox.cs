@@ -9,6 +9,7 @@ public class MailBox : MonoBehaviour
     public GM gM;
     public GameObject pointerBAL;
     public GameObject upPointerBal;
+    
    
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -19,6 +20,16 @@ public class MailBox : MonoBehaviour
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
             pointerBAL.SetActive(false);
             upPointerBal.SetActive(false);
+        }
+    }
+
+    public void ResetLevel()
+    {
+        if(gM.resetLevel)
+        {
+            gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            pointerBAL.SetActive(true);
+            upPointerBal.SetActive(true);
         }
     }
 }
