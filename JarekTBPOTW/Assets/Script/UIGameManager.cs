@@ -8,25 +8,14 @@ using UnityEngine.UI;
 public class UIGameManager : MonoBehaviour
 {
     public GM gM;
-    public UnityEvent CheckWin;
     public Sprite medailleDor;
     public Sprite medailleDargent;
     public Sprite medailleBronze;
     public Sprite medailleNull;
     public Image medaillePosition;
-    public Timer timer;
 
-    private void Start()
-    {
-        Time.timeScale = 0f;
-    }
     public void Update()
     {
-        if (gM.isWin)
-        {
-            CheckWin.Invoke();
-            timer.HighScore();
-        }
         if(gM.elapsedTime >= 60f)
         {
             medaillePosition.sprite = medailleNull;

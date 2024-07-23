@@ -22,14 +22,4 @@ public class MailBox : MonoBehaviour
             upPointerBal.SetActive(false);
         }
     }
-
-    public void ResetLevel()
-    {
-        if(gM.resetLevel)
-        {
-            gameObject.GetComponent<BoxCollider2D>().enabled = true;
-            pointerBAL.SetActive(true);
-            upPointerBal.SetActive(true);
-        }
-    }
 }
