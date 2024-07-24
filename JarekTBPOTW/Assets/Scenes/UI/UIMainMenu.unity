@@ -248,12 +248,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Resume de la semaine de ce que j'ai fait:\n- Deplacement du joueur fonctionnel\n-
-    Boite aux Lettres sans affichage pour Interragir mais fonctionnel\n- Sac poubelle
-    fonctionnel\n- Distributeur Fonctionnel\n- Store Fonctionnel\n- Chronometre fonctionnel
-    avec les m\xE9dailles \n- Leaderboard en suspend\n- Animations du personnage
-    et BAL fonctionnel\n- Conditions de victoire fonctionnel\n-Fleches sur le bord
-    de l'\xE9cran focntionnel\n- Camera Fonctionnel\n\n"
+  m_text: '
+
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

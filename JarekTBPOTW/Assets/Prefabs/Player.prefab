@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 1711902987484689702}
   - component: {fileID: 8299716046046751368}
   - component: {fileID: 4455587166891373362}
-  - component: {fileID: 7777423912453357448}
+  - component: {fileID: 2631645196810559798}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -196,7 +196,7 @@ Transform:
   m_GameObject: {fileID: 2000534049893205662}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.9, y: 5.98, z: 0}
+  m_LocalPosition: {x: -4.891, y: 5.971, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -247,7 +247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7e5eec0a6cab6340a560d1dcc3c1e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sB: {fileID: 2540302453135524230, guid: d622df5a1d21b2745b86015937871864, type: 3}
+  sB: {fileID: 0}
   _rb2D: {fileID: 8299716046046751368}
   gravityPlane: 1.5
   _isInterracting: 0
@@ -260,12 +260,12 @@ MonoBehaviour:
   fallMultiplier: 3
   lowJumpMultiplier: 2.5
   jumpForce: 6
-  coyoteTime: 0
+  coyoteTime: 0.2
   dashForce: 10
   dashDuration: 0.3
   chronoDash: 0
   _canDash: 0
-  _tRD: {fileID: 0}
+  _tRD: {fileID: 6894772273670787345}
   isSlinding: 0
   wallSlideSpeed: 0.3
   wallJumpForce: {x: 7.5, y: 10}
@@ -274,7 +274,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  groundCheckerSize: {x: 0.1, y: 0.1}
+  groundCheckerSize: {x: 0.4, y: 0.1}
   groundCheckerTransform: {fileID: 3239921902267624612}
   wallLayer:
     serializedVersion: 2
@@ -284,11 +284,11 @@ MonoBehaviour:
   wallCheckerTransformRight: {fileID: 7158814444510701625}
   moveSpeed: 5
   currentSpeed: 0
-  decelSpeed: 0
+  decelSpeed: 25
   decelDir: {x: 0, y: 0}
   currentStates: 0
---- !u!61 &7777423912453357448
-BoxCollider2D:
+--- !u!70 &2631645196810559798
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -319,19 +319,9 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.05, y: -0.05}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.6666667, y: 2.6666667}
-    newSize: {x: 0.64, y: 0.64}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.55, y: 1.25}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0.06999111, y: 0.06561613}
+  m_Size: {x: 0.517498, y: 1.3587036}
+  m_Direction: 0
 --- !u!1 &2222261652753706034
 GameObject:
   m_ObjectHideFlags: 0
@@ -506,7 +496,7 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_MaskInteraction: 0
   m_Autodestruct: 0
-  m_Emitting: 1
+  m_Emitting: 0
   m_ApplyActiveColorSpace: 1
 --- !u!1 &8922427959882091840
 GameObject:
