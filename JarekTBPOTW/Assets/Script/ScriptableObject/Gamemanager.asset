@@ -13,12 +13,7 @@ MonoBehaviour:
   m_Name: Gamemanager
   m_EditorClassIdentifier: 
   tM:
-    list:
-    - 32.108715
-    - 33.72014
-    - 37.493427
-    - 3555.11
-    - 33222.21
-  nbrBAL_a_D: 7
+    list: []
+  nbrBAL_a_D: 10
   isWin: 0
-  elapsedTime: 32.11186
+  elapsedTime: 335.71048

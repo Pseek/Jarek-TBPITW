@@ -10,6 +10,6 @@ public class AddBAL_UI : MonoBehaviour
 
     public void Update()
     {
-        scoreText.text = gM.nbrBAL_a_D.ToString() + "/20";
+        scoreText.text = gM.nbrBAL_a_D.ToString() + "/25";
     }
 }

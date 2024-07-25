@@ -76,6 +76,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void Start()
     {
+        currentSpeed = moveSpeed;
         _rb2D.freezeRotation = true;
     }
 
@@ -149,6 +150,7 @@ public class PlayerMovement : MonoBehaviour
         switch (currentStates)
         {
             case States.ILDE:
+                currentSpeed = moveSpeed;
                 _canCoyote = 0;
                 m_Animator.SetFloat("VelocityX", 0f);
                 _isJumped = false;
@@ -441,6 +443,7 @@ public class PlayerMovement : MonoBehaviour
             case States.ILDE:
                 break;
             case States.RUN:
+                
                 break;
             case States.JUMP:
                 break;
