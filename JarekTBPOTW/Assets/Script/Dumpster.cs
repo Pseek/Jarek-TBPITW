@@ -14,19 +14,10 @@ public class Dumpster : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            
             collision.GetComponent<PlayerMovement>().StartFallDumpster();
-            StartCoroutine(CDFallCooldown());
+            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            spriteRenderer.sprite = emptyDumpster;
+            
         }
-    }
-
-    IEnumerator CDFallCooldown()
-    {
-        gameObject.GetComponent<BoxCollider2D>().enabled = false;
-        spriteRenderer.sprite = emptyDumpster;
-        yield return new WaitForSeconds(CdDumpster);
-        spriteRenderer.sprite = fullDumpster;  
-        gameObject.GetComponent <BoxCollider2D>().enabled = true;
-        StopCoroutine(CDFallCooldown());
     }
 }

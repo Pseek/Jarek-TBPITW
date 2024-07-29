@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tM:
     list: []
-  nbrBAL_a_D: 10
+  nbrBAL_a_D: 26
   isWin: 0
-  elapsedTime: 335.71048
+  elapsedTime: 482.15146

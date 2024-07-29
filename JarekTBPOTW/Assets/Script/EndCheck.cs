@@ -6,6 +6,8 @@ public class EndCheck : MonoBehaviour
 {
     public GM gM;
     public PlayerMovement pM;
+    public GameObject EndIndication;
+    public GameObject ArrowIndication;
     
 
     public void OnTriggerStay2D(Collider2D collision)
@@ -16,6 +18,15 @@ public class EndCheck : MonoBehaviour
             gM.tM.AddTimeList(gM.elapsedTime);
             gM.tM.SortList();
             gM.Save();
+        }
+    }
+
+    public void Update()
+    {
+        if (gM.nbrBAL_a_D == 25)
+        {
+            EndIndication.SetActive(true);
+            ArrowIndication.SetActive(true);    
         }
     }
 }

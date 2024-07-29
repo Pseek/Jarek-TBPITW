@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     public Animator m_Animator;
 
     [Header("Jump")]
+    public bool _isFly = false;
     public bool _isJumped = false;
     private bool _isGrounded = false;
     public float fallMultiplier = 2.5f;
@@ -162,6 +163,7 @@ public class PlayerMovement : MonoBehaviour
                 currentSpeed = moveSpeed;
                 break;
             case States.JUMP:
+                _isFly = false;
                 m_Animator.SetFloat("VelocityY", 0.1f);
                 _rb2D.velocity = new Vector2(_rb2D.velocity.x, jumpForce);
                 break;
@@ -190,7 +192,6 @@ public class PlayerMovement : MonoBehaviour
                 _isDashed = false;
                 break;
             case States.FLY:
-     
                 m_Animator.SetFloat("VelocityY", 0.5f);
                 break;
         }
@@ -275,11 +276,16 @@ public class PlayerMovement : MonoBehaviour
                 if (_rb2D.velocity.y > 0f && !_isJumped)
                 {
                     _rb2D.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1f) * Time.deltaTime;
+                   
+                }
+                if (_isFly && _rb2D.velocity.y >= 0f)
+                {
+                    TransitionToStates(States.FLY);
                 }
                 if (_rb2D.velocity.y < 0f && !_isGrounded)
-                {
-                    TransitionToStates(States.FALL);
-                }
+                    {                             
+                        TransitionToStates(States.FALL);
+                    }   
                 if (_isOnWall && !_isGrounded && _direction.magnitude != 0f)
                 {
                     TransitionToStates(States.WALLSLIDE);
@@ -295,6 +301,11 @@ public class PlayerMovement : MonoBehaviour
                 if (sB.isStored)
                 {
                     _rb2D.velocity = new Vector2(_rb2D.velocity.x, sB.bumperForce);
+                    TransitionToStates(States.FALL);
+                }
+
+                if (_rb2D.velocity.y < 0f && _isGrounded)
+                {
                     TransitionToStates(States.FALL);
                 }
                 break;
@@ -413,6 +424,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     TransitionToStates(States.FALL);
                 }
+                if (_canDash && _isDashed)
+                {
+                    TransitionToStates(States.DASH);
+                }
                 if(sB.isStored)
                 {
                     _rb2D.velocity = new Vector2(_rb2D.velocity.x, sB.bumperForce);
@@ -462,7 +477,7 @@ public class PlayerMovement : MonoBehaviour
             case States.DASH:
                 _tRD.emitting = false;
                 _rb2D.velocity = Vector2.zero;
-                _rb2D.gravityScale = 1f;
+                _rb2D.gravityScale = 1.75f;
                 break;
             case States.FLY:
                 break;
@@ -506,12 +521,15 @@ public class PlayerMovement : MonoBehaviour
     {
         switch (context.phase)
         {
+            case InputActionPhase.Started:
+                _isFly = true;
+                break;
             case InputActionPhase.Performed:
-
                 _isJumped = true;
                 break;
             case InputActionPhase.Canceled:
                 _isJumped = false;
+                _isFly = false;
                 break;
         }
     }
@@ -521,7 +539,6 @@ public class PlayerMovement : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Performed:
-
                 _isInterracting = true;
                 break;
             case InputActionPhase.Canceled:
@@ -568,7 +585,7 @@ public class PlayerMovement : MonoBehaviour
     {
         moveSpeed = buffSpeed;
         yield return new WaitForSeconds(15f);
-        moveSpeed = 5f;
+        moveSpeed = 7.5f;
         StopCoroutine(GetSpeedUp());
     }
 

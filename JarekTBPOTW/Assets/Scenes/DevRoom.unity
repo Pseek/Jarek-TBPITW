@@ -4779,6 +4779,10 @@ PrefabInstance:
       propertyPath: pM
       value: 
       objectReference: {fileID: 1421884826}
+    - target: {fileID: 3047621977475478803, guid: faf3ff223b0e14a4c9bb328243bf8b56, type: 3}
+      propertyPath: EndIndication
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8246309741584041213, guid: faf3ff223b0e14a4c9bb328243bf8b56, type: 3}
       propertyPath: m_Name
       value: CheckWinHitBox
