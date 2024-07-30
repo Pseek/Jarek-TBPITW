@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Variable")]
+    public GM gM;
     public StoreBumper sB;
     private Vector2 _direction;
     private Vector2 _velocity;
@@ -87,6 +88,11 @@ public class PlayerMovement : MonoBehaviour
         Collider2D wallLeft = Physics2D.OverlapBox(wallCheckerTransformLeft.position, wallCheckerSize, 0f, wallLayer);
         Collider2D wallRight = Physics2D.OverlapBox(wallCheckerTransformRight.position, wallCheckerSize, 0f, wallLayer);
         m_Animator.SetBool("IsGrounded", _isGrounded);
+
+        if (Time.timeScale == 0f)
+        {
+            _direction.x = 0f;
+        }
 
         if (ground != null)
         {
@@ -376,6 +382,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     TransitionToStates(States.FALL);
                 }
+                if (isFallDumpster)
+                {
+                    TransitionToStates(States.FALLDUMPSTER);
+                }
 
                 break;
             case States.WALLJUMP:
@@ -388,6 +398,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     _rb2D.velocity = new Vector2(_rb2D.velocity.x, sB.bumperForce);
                     TransitionToStates(States.FALL);
+                }
+                if (isFallDumpster)
+                {
+                    TransitionToStates(States.FALLDUMPSTER);
                 }
                 break;
             case States.DASH:
@@ -551,10 +565,10 @@ public class PlayerMovement : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Performed:
-                
+                Debug.Log(gM.isPause);
+                gM.isPause = true;
                 break;
             case InputActionPhase.Canceled:
-    
                 break;
         }
     }

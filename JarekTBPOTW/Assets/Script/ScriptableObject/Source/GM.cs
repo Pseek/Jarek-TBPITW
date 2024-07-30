@@ -27,6 +27,7 @@ public class GM : ScriptableObject
     public TimerList tM;
     public int nbrBAL_a_D;
     public bool isWin = false;
+    public bool isPause = false;
     public float elapsedTime;
 
     string filePath = Application.streamingAssetsPath + "/words.json";
@@ -51,9 +52,9 @@ public class GM : ScriptableObject
         string json = File.ReadAllText(filePath);
         tM = JsonUtility.FromJson<TimerList>(json);
     }
+    
     public void RemoveBAL()
     {
-
         nbrBAL_a_D = 0;
         isWin = false;
         elapsedTime = 0;

@@ -7,12 +7,32 @@ public class Distributeur : MonoBehaviour
 {
     public PlayerMovement pM;
     public TrailRenderer tr;
+    public GameObject buttonInterract;
+    public bool isDrinked;
+
+    private void Start()
+    {
+        isDrinked = true;
+    }
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && pM._isInterracting)
         {
             collision.GetComponent<PlayerMovement>().GetBuffSpeed();
             StartCoroutine(CdDistributeur());
+            buttonInterract.SetActive(false);
+            isDrinked=false;
+        }
+        if (collision.CompareTag("Player") && isDrinked == true)
+        {
+            buttonInterract.SetActive(true);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player") && isDrinked == true)
+        {
+            buttonInterract.SetActive(false);
         }
     }
     IEnumerator CdDistributeur()
@@ -24,5 +44,4 @@ public class Distributeur : MonoBehaviour
         tr.emitting = false;
         StopCoroutine(CdDistributeur());
     }
-    
 }

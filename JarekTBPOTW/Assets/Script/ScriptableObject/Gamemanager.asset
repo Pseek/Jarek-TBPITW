@@ -16,4 +16,5 @@ MonoBehaviour:
     list: []
   nbrBAL_a_D: 26
   isWin: 0
-  elapsedTime: 482.15146
+  isPause: 0
+  elapsedTime: 850.17566

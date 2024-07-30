@@ -8,6 +8,7 @@ public class Timer : MonoBehaviour
 {
     public GM gM;
     public TextMeshProUGUI timerText;
+    public TextMeshProUGUI timerPause;
    
     void Update()
     {
@@ -16,5 +17,6 @@ public class Timer : MonoBehaviour
         int seconds = Mathf.FloorToInt(gM.elapsedTime % 60);
         int millieme =Mathf.FloorToInt((gM.elapsedTime - (int)gM.elapsedTime) *10f);
         timerText.text = string.Format("{0:00}:{1:00}:{2:0}",minutes,seconds,millieme);
+        timerPause.text = string.Format("{0:00}:{1:00}:{2:0}", minutes, seconds, millieme);
     }
 }
