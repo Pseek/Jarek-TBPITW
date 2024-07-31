@@ -12,7 +12,7 @@ public class EndCheck : MonoBehaviour
 
     public void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && pM._isInterracting && gM.nbrBAL_a_D == 25)
+        if (collision.CompareTag("Player") && pM._isInterracting && gM.nbrBAL_a_D > 19)
         {
             gM.ChangesScene("UIWinMenu");
             gM.tM.AddTimeList(gM.elapsedTime);
@@ -23,7 +23,7 @@ public class EndCheck : MonoBehaviour
 
     public void Update()
     {
-        if (gM.nbrBAL_a_D == 25)
+        if (gM.nbrBAL_a_D > 19)
         {
             EndIndication.SetActive(true);
             ArrowIndication.SetActive(true);    

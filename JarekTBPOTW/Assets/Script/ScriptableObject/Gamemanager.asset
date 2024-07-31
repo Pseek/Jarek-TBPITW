@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Gamemanager
   m_EditorClassIdentifier: 
   tM:
-    list: []
-  nbrBAL_a_D: 26
+    list:
+    - 344.9818
+  nbrBAL_a_D: 21
   isWin: 0
   isPause: 0
-  elapsedTime: 850.17566
+  elapsedTime: 351.01578

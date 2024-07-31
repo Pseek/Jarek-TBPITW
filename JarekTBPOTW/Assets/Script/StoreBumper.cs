@@ -7,6 +7,7 @@ public class StoreBumper : MonoBehaviour
     public PlayerMovement pM;
     public float bumperForce;
     public bool isStored;
+    public AudioSource aS;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
@@ -14,6 +15,7 @@ public class StoreBumper : MonoBehaviour
             pM._canDash = true;
             isStored = true;
             collision.gameObject.GetComponent<PlayerMovement>().sB = this;
+            aS.Play();
         }
     }
 

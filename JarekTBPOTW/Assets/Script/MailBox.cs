@@ -10,6 +10,7 @@ public class MailBox : MonoBehaviour
     public GameObject pointerBAL;
     public GameObject upPointerBal;
     public GameObject buttonBal;
+    public AudioSource aS;
     public bool isBAL;
 
     private void Start()
@@ -27,7 +28,7 @@ public class MailBox : MonoBehaviour
             pointerBAL.SetActive(false);
             upPointerBal.SetActive(false);
             buttonBal.SetActive(false);
-
+            aS.Play();
         }
 
         if (collision.CompareTag("Player") && isBAL == true)
