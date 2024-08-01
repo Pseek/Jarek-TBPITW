@@ -18,6 +18,14 @@ public class PlayerMovement : MonoBehaviour
     public bool isFallDumpster = false;
     public float buffSpeed;
     public Animator m_Animator;
+    
+
+    [Header("SoundEffect")]
+    public AudioSource aS;
+    public AudioClip acJump;
+    public AudioClip acFly;
+    public AudioClip acDash;
+    public AudioClip acWallJump;
 
     [Header("Jump")]
     public bool _isFly = false;
@@ -169,6 +177,8 @@ public class PlayerMovement : MonoBehaviour
                 currentSpeed = moveSpeed;
                 break;
             case States.JUMP:
+                aS.clip = acJump;
+                aS.Play();
                 _isFly = false;
                 m_Animator.SetFloat("VelocityY", 0.1f);
                 _rb2D.velocity = new Vector2(_rb2D.velocity.x, jumpForce);
@@ -182,6 +192,8 @@ public class PlayerMovement : MonoBehaviour
                 isFallDumpster = false;
                 break;
             case States.WALLJUMP:
+                aS.clip = acWallJump;
+                aS.Play();
                 _rb2D.velocity = new Vector2(-_direction.x * wallJumpForce.x, wallJumpForce.y);
                 wallJumpChrono = 0;
                 break;
@@ -190,6 +202,8 @@ public class PlayerMovement : MonoBehaviour
                 currentSpeed = moveSpeed;
                 break;
             case States.DASH:
+                aS.clip = acDash;
+                aS.Play();
                 _tRD.emitting = true;
                 dashDir = _direction;
                 chronoDash = 0f;
@@ -198,6 +212,9 @@ public class PlayerMovement : MonoBehaviour
                 _isDashed = false;
                 break;
             case States.FLY:
+                aS.loop = true;
+                aS.clip = acFly;
+                aS.Play();
                 m_Animator.SetFloat("VelocityY", 0.5f);
                 break;
         }
@@ -475,6 +492,7 @@ public class PlayerMovement : MonoBehaviour
                 
                 break;
             case States.JUMP:
+                aS.Stop();
                 break;
             case States.FALL:
                 m_Animator.SetFloat("VelocityY", 0f);
@@ -486,14 +504,18 @@ public class PlayerMovement : MonoBehaviour
             case States.WALLSLIDE:
                 break;
             case States.WALLJUMP:
+                aS.Stop();
                 _rb2D.velocity = Vector2.zero;
                 break;
             case States.DASH:
+                aS.Stop();
                 _tRD.emitting = false;
                 _rb2D.velocity = Vector2.zero;
                 _rb2D.gravityScale = 1.75f;
                 break;
             case States.FLY:
+                aS.loop = false;
+                aS.Stop();
                 break;
         }
     }

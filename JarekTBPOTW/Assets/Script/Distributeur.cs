@@ -8,6 +8,7 @@ public class Distributeur : MonoBehaviour
     public PlayerMovement pM;
     public TrailRenderer tr;
     public GameObject buttonInterract;
+    public AudioSource aS;
     public bool isDrinked;
 
     private void Start()
@@ -21,6 +22,7 @@ public class Distributeur : MonoBehaviour
             collision.GetComponent<PlayerMovement>().GetBuffSpeed();
             StartCoroutine(CdDistributeur());
             buttonInterract.SetActive(false);
+            aS.Play();
             isDrinked=false;
         }
         if (collision.CompareTag("Player") && isDrinked == true)

@@ -180,6 +180,7 @@ MonoBehaviour:
   pM: {fileID: 0}
   tr: {fileID: 0}
   buttonInterract: {fileID: 305322683326130846}
+  aS: {fileID: 7611627575424273812}
   isDrinked: 0
 --- !u!82 &7611627575424273812
 AudioSource:
@@ -191,8 +192,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 06628c2be763dda42b575825c8193403, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
