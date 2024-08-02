@@ -177,6 +177,14 @@ public class PlayerMovement : MonoBehaviour
                 currentSpeed = moveSpeed;
                 break;
             case States.JUMP:
+                if (gM.isPause)
+                {
+                    aS.mute = true;
+                }
+                else
+                {
+                    aS.mute = false;
+                }
                 aS.clip = acJump;
                 aS.Play();
                 _isFly = false;
@@ -587,7 +595,6 @@ public class PlayerMovement : MonoBehaviour
         switch (context.phase)
         {
             case InputActionPhase.Performed:
-                Debug.Log(gM.isPause);
                 gM.isPause = true;
                 break;
             case InputActionPhase.Canceled:

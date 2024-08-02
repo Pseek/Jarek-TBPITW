@@ -24,9 +24,14 @@ public class EndCheck : MonoBehaviour
     public void Update()
     {
         if (gM.nbrBAL_a_D > 19)
-        {
+        { 
             EndIndication.SetActive(true);
-            ArrowIndication.SetActive(true);    
+            ArrowIndication.SetActive(true);
+            gM.isWin = true;        
+        }
+        if (gM.isWin && gM.isStop)
+        {
+            gM.isWin = false;
         }
     }
 }

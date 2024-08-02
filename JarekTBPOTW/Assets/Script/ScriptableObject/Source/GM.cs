@@ -28,6 +28,7 @@ public class GM : ScriptableObject
     public int nbrBAL_a_D;
     public bool isWin = false;
     public bool isPause = false;
+    public bool isStop = false;
     public float elapsedTime;
 
     string filePath = Application.streamingAssetsPath + "/words.json";

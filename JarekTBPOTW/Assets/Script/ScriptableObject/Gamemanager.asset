@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tM:
     list:
+    - 237.4146
     - 344.9818
   nbrBAL_a_D: 21
   isWin: 0
   isPause: 0
-  elapsedTime: 351.01578
+  isStop: 1
+  elapsedTime: 329.5291

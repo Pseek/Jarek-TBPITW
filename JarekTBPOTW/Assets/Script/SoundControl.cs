@@ -19,17 +19,38 @@ public class SoundControl : MonoBehaviour
 
     public void SetLevelMaster (float masterValue)
     {
-        mixer.SetFloat("MasterVolume" , Mathf.Log(masterValue) * 20 );
-        PlayerPrefs.SetFloat("MasterVolume" , masterValue );
+        if (masterValue <= 0)
+        {
+            mixer.SetFloat("MasterVolume", 0);
+        }
+        else
+        {
+            mixer.SetFloat("MasterVolume", Mathf.Log(masterValue) * 20);   
+        }
+        PlayerPrefs.SetFloat("MasterVolume", masterValue);
     }
     public void SetLevelMusic(float musicValue)
     {
-        mixer.SetFloat("MusicVolume", Mathf.Log(musicValue) * 20);
+        if (musicValue <= 0)
+        {
+            mixer.SetFloat("MusicVolume", 0);
+        }
+        else
+        {
+            mixer.SetFloat("MusicVolume", Mathf.Log(musicValue) * 20);
+        }
         PlayerPrefs.SetFloat("MusicVolume", musicValue);
     }
     public void SetLevelSFX(float sfxValue)
     {
-        mixer.SetFloat("SFXVolume", Mathf.Log(sfxValue) * 20);
+        if (sfxValue <= 0)
+        {
+            mixer.SetFloat("SFXVolume", 0);
+        }
+        else
+        {
+            mixer.SetFloat("SFXVolume", Mathf.Log(sfxValue) * 20);
+        }
         PlayerPrefs.SetFloat("SFXVolume", sfxValue);
     }
 
