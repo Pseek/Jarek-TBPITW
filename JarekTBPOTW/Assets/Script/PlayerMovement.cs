@@ -37,19 +37,22 @@ public class PlayerMovement : MonoBehaviour
     public float coyoteTime;
     private float _coyoteCounterTime;
     private int _canCoyote;
+    private float flySpeed;
+    private float fallSpeed;
+    private float jumpSpeed;
 
     [Header("Dash")]
-    private Vector2 dashDir;
     public float dashForce;
     public float dashDuration;
     public float chronoDash;
     private bool _isDashed = false;
     public bool _canDash = false;
-    public TrailRenderer _tRD;
+    public TrailRenderer _tRD; 
+    private Vector2 dashDir;
      
     [Header("WallJump")]
-    private bool _isOnWall = false;
     public bool isSlinding;
+    private bool _isOnWall = false;
     public float wallSlideSpeed;
     public Vector2 wallJumpForce;
     public float wallJumpDuration;
@@ -63,7 +66,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("WallDectection")]
     public LayerMask wallLayer;
     public Vector2 wallCheckerSize = Vector2.one;
-    public Transform wallCheckerTransformLeft;
     public Transform wallCheckerTransformRight;
 
     [Header("Speed")]
@@ -93,7 +95,6 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         Collider2D ground = Physics2D.OverlapBox(groundCheckerTransform.position, groundCheckerSize, 0f, groundLayer);
-        Collider2D wallLeft = Physics2D.OverlapBox(wallCheckerTransformLeft.position, wallCheckerSize, 0f, wallLayer);
         Collider2D wallRight = Physics2D.OverlapBox(wallCheckerTransformRight.position, wallCheckerSize, 0f, wallLayer);
         m_Animator.SetBool("IsGrounded", _isGrounded);
 
@@ -112,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
             _isGrounded = false;
         }
 
-        if (wallLeft != null || wallRight != null)
+        if (wallRight != null)
         {
             _isOnWall = true;
             _canDash = true;
@@ -156,7 +157,6 @@ public class PlayerMovement : MonoBehaviour
             Gizmos.color = Color.red;
         }
 
-        Gizmos.DrawCube(wallCheckerTransformLeft.position, wallCheckerSize);
         Gizmos.DrawCube(wallCheckerTransformRight.position, wallCheckerSize);
     }
 
@@ -185,6 +185,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     aS.mute = false;
                 }
+                jumpSpeed = currentSpeed;
                 aS.clip = acJump;
                 aS.Play();
                 _isFly = false;
@@ -220,6 +221,7 @@ public class PlayerMovement : MonoBehaviour
                 _isDashed = false;
                 break;
             case States.FLY:
+                flySpeed = currentSpeed;
                 aS.loop = true;
                 aS.clip = acFly;
                 aS.Play();
@@ -300,8 +302,20 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break;
             case States.JUMP:
-                _velocity.x = _direction.x * currentSpeed;
-                _velocity.y = _rb2D.velocity.y;
+                if (_direction.magnitude == 0f)
+                {
+                    currentSpeed -= Time.deltaTime * decelSpeed;
+                    currentSpeed = Mathf.Max(0f, currentSpeed);
+                    _velocity.x = decelDir.x * currentSpeed;
+                    _velocity.y = _rb2D.velocity.y;
+                }
+                else
+                {
+                    currentSpeed = jumpSpeed;
+                    _velocity.x = _direction.x * currentSpeed;
+                    _velocity.y = _rb2D.velocity.y;
+                    decelDir = _direction;
+                }
                 _rb2D.velocity = _velocity;
 
                 if (_rb2D.velocity.y > 0f && !_isJumped)
@@ -341,8 +355,20 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break;
             case States.FALL:
-                _velocity.x = _direction.x * currentSpeed;
-                _velocity.y = _rb2D.velocity.y;
+                if (_direction.magnitude == 0f)
+                {
+                    currentSpeed -= Time.deltaTime * decelSpeed;
+                    currentSpeed = Mathf.Max(0f, currentSpeed);
+                    _velocity.x = decelDir.x * currentSpeed;
+                    _velocity.y = _rb2D.velocity.y;
+                }
+                else
+                {
+                    currentSpeed = jumpSpeed;
+                    _velocity.x = _direction.x * currentSpeed;
+                    _velocity.y = _rb2D.velocity.y;
+                    decelDir = _direction;
+                }
                 _rb2D.velocity = _velocity;
                 _rb2D.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1f) * Time.deltaTime;
                 _coyoteCounterTime += Time.deltaTime;
@@ -456,7 +482,24 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break;
             case States.FLY:
-                _velocity.x = _direction.x * currentSpeed;
+                if (_direction.magnitude == 0f)
+                {
+                    currentSpeed -= Time.deltaTime * decelSpeed;
+                    currentSpeed = Mathf.Max(0f, currentSpeed);
+                    _velocity.x = decelDir.x * currentSpeed;
+                    _velocity.y = _rb2D.velocity.y;
+                }
+                else
+                {
+                    currentSpeed = flySpeed;
+                    if (currentSpeed == 0f)
+                    {
+                        currentSpeed = moveSpeed;
+                    }
+                    _velocity.x = _direction.x * currentSpeed;
+                    _velocity.y = _rb2D.velocity.y;
+                    decelDir = _direction;
+                }
                 _velocity.y = -gravityPlane;
                 _rb2D.velocity = _velocity;
                 if (!_isJumped)
@@ -497,12 +540,13 @@ public class PlayerMovement : MonoBehaviour
             case States.ILDE:
                 break;
             case States.RUN:
-                
+                decelDir.x = 0f;
                 break;
             case States.JUMP:
                 aS.Stop();
                 break;
             case States.FALL:
+                decelDir.x = 0f;
                 m_Animator.SetFloat("VelocityY", 0f);
                 _coyoteCounterTime = 0f;
                 break;
@@ -522,6 +566,7 @@ public class PlayerMovement : MonoBehaviour
                 _rb2D.gravityScale = 1.75f;
                 break;
             case States.FLY:
+                decelDir.x = 0f;
                 aS.loop = false;
                 aS.Stop();
                 break;

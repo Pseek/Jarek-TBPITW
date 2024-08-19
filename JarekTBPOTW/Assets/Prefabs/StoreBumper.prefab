@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pM: {fileID: 0}
-  bumperForce: 15
+  bumperForce: 20
   isStored: 0
   aS: {fileID: 7319983426486052958}
 --- !u!82 &7319983426486052958

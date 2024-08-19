@@ -59,6 +59,7 @@ public class GM : ScriptableObject
         nbrBAL_a_D = 0;
         isWin = false;
         elapsedTime = 0;
+        isStop = false;
     }
     
     public void AddBAL (int paper)
