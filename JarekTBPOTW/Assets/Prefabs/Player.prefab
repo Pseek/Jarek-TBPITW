@@ -104,7 +104,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 8
   m_Sprite: {fileID: 21300000, guid: b04228aef2c05f84e93290738121cd81, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -162,7 +162,7 @@ Transform:
   m_GameObject: {fileID: 1679184578346649666}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.043, y: -0.691, z: 0}
+  m_LocalPosition: {x: 0.058, y: -0.705, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -198,8 +198,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.891, y: 5.971, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3239921902267624612}
   - {fileID: 7073871196753428210}
@@ -225,7 +225,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 1.75
   m_Material: {fileID: 6200000, guid: caf15dc1ae0452343ba7a8f009cc3efd, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -249,45 +249,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7e5eec0a6cab6340a560d1dcc3c1e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gM: {fileID: 0}
+  gM: {fileID: 11400000, guid: 5627ebe77504b864c82ddea469d2f717, type: 2}
   sB: {fileID: 0}
   _rb2D: {fileID: 8299716046046751368}
-  gravityPlane: 1.25
+  gravityPlane: 3
   _isInterracting: 0
   fallDumpsterSpeed: 2
   canGetUp: 0
   isFallDumpster: 0
-  buffSpeed: 6.5
+  buffSpeed: 10
   m_Animator: {fileID: 1040715973706046072}
   aS: {fileID: 5807991066643189098}
+  acJump: {fileID: 8300000, guid: a157d0cb38e22fb4892a7ebf33064cca, type: 3}
+  acFly: {fileID: 8300000, guid: 30d88c2bac801c846a6ac0832a30ae94, type: 3}
+  acDash: {fileID: 8300000, guid: 8fe7cff547d20ff429326bb3b0ba4694, type: 3}
+  acWallJump: {fileID: 8300000, guid: 828493144b63db94ebf8fa95ae85946c, type: 3}
   _isFly: 0
   _isJumped: 0
-  fallMultiplier: 3
+  fallMultiplier: 4
   lowJumpMultiplier: 2.5
-  jumpForce: 6
+  jumpForce: 10
   coyoteTime: 0.2
-  dashForce: 10
+  dashForce: 12.5
   dashDuration: 0.3
   chronoDash: 0
   _canDash: 0
   _tRD: {fileID: 6894772273670787345}
   isSlinding: 0
   wallSlideSpeed: 0.3
-  wallJumpForce: {x: 7.5, y: 10}
+  wallJumpForce: {x: 10, y: 15}
   wallJumpDuration: 0.2
   wallJumpChrono: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  groundCheckerSize: {x: 0.4, y: 0.1}
+  groundCheckerSize: {x: 0.5, y: 0.1}
   groundCheckerTransform: {fileID: 3239921902267624612}
   wallLayer:
     serializedVersion: 2
     m_Bits: 128
-  wallCheckerSize: {x: 0.1, y: 1.15}
-  wallCheckerTransformLeft: {fileID: 7073871196753428210}
+  wallCheckerSize: {x: 0.1, y: 1.75}
   wallCheckerTransformRight: {fileID: 7158814444510701625}
-  moveSpeed: 5
+  moveSpeed: 7.5
   currentSpeed: 0
   decelSpeed: 25
   decelDir: {x: 0, y: 0}
@@ -324,8 +327,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.06999111, y: 0.06561613}
-  m_Size: {x: 0.517498, y: 1.3587036}
+  m_Offset: {x: 0.06561025, y: -0.005986055}
+  m_Size: {x: 0.43864316, y: 1.2519624}
   m_Direction: 0
 --- !u!82 &5807991066643189098
 AudioSource:
@@ -336,7 +339,7 @@ AudioSource:
   m_GameObject: {fileID: 2000534049893205662}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -1713997289661756742, guid: 19b0a35d4a5cea942b8154d1ef89727f, type: 2}
   m_audioClip: {fileID: 8300000, guid: 828493144b63db94ebf8fa95ae85946c, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -527,7 +530,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 7
   m_Time: 0.1
   m_PreviewTimeScale: 1
   m_Parameters:
@@ -672,7 +675,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 7
   m_Time: 0.15
   m_PreviewTimeScale: 1
   m_Parameters:
@@ -742,7 +745,7 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_MaskInteraction: 0
   m_Autodestruct: 0
-  m_Emitting: 1
+  m_Emitting: 0
   m_ApplyActiveColorSpace: 1
 --- !u!1 &8922427959882091840
 GameObject:
