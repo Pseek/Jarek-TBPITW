@@ -18,8 +18,8 @@ public class PlayerMovement : MonoBehaviour
     public bool isFallDumpster = false;
     public float buffSpeed;
     public Animator m_Animator;
-    
-
+    public bool isDogged = false;
+   
     [Header("SoundEffect")]
     public AudioSource aS;
     public AudioClip acJump;
@@ -552,6 +552,7 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case States.FALLDUMPSTER:
                 m_Animator.SetBool("IsFallDumpster", false);
+                isDogged = false;
                 break;
             case States.WALLSLIDE:
                 break;
@@ -680,5 +681,14 @@ public class PlayerMovement : MonoBehaviour
     public void GetBuffSpeed()
     {
         StartCoroutine(GetSpeedUp());
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Dog"))
+        {
+            StartFallDumpster();
+            isDogged = true;
+        }
     }
 }

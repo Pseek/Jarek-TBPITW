@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
-using Unity.VisualScripting;
 
 public class Dog : MonoBehaviour
 {
     public MailBox mB;
+    public PlayerMovement pM;
     public Transform currentTarget;
     public Transform positionPlayer;
     public Transform positionGarde;
@@ -40,7 +40,7 @@ public class Dog : MonoBehaviour
         seeker = GetComponent<Seeker>();
         rb2D = GetComponent<Rigidbody2D>();
         gameObject.transform.position = positionGarde.position;
-        InvokeRepeating("UpdatePath", 0f, 0.5f);
+        InvokeRepeating("UpdatePath", 0f, 0.1f);
     }
 
     void UpdatePath()
@@ -56,15 +56,11 @@ public class Dog : MonoBehaviour
             currentWaypoint = 0;
         }
     }
-  
-    void FixedUpdate()
+    private void Update()
     {
         OnStatesUpdate();
     }
-    public void OnGardePath()
-    {
 
-    }
     public void OnTargetPath()
     {
         if (path == null)
@@ -92,11 +88,11 @@ public class Dog : MonoBehaviour
             currentWaypoint++;
         }
 
-        if (direction.x >= 0.01f)
+        if (rb2D.velocity.x >= 0.01f)
         {
             enemyGFX.localScale = new Vector3(-1f, 1f, 1f);
         }
-        else if (direction.x <= -0.01f)
+        else if (rb2D.velocity.x <= -0.01f)
         {
             enemyGFX.localScale = new Vector3(1f, 1f, 1f);
         }
@@ -106,18 +102,22 @@ public class Dog : MonoBehaviour
         switch (currentDogStates)
         {
             case DogStates.SLEEPING:
-                animDog.SetBool("IsGarde", false);
+                animDog.SetBool("IsPlayerHere", false);
+                animDog.SetBool("IsSleeping", true);
                 break;
             case DogStates.GARDE:
                 speedEnemy = 0f;
+                animDog.SetBool("IsPlayerHere", true);
                 animDog.SetBool("IsGarde", true);
                 break;
             case DogStates.RUNTOTARGET:
+                currentTarget = positionPlayer;
                 animDog.SetBool("IsRunning", true);
-                speedEnemy = 300f;
+                speedEnemy = 500f;
                 break;
             case DogStates.WALKTOGARDE:
-                speedEnemy = 200f;
+                currentTarget = positionGarde;
+                speedEnemy = 400f;
                 animDog.SetBool("IsWalk", true);
                 break;
         }
@@ -128,6 +128,10 @@ public class Dog : MonoBehaviour
         {
             case DogStates.SLEEPING:
                 if (isEnterDogDetection)
+                {
+                    TransitionToStates(DogStates.GARDE);
+                }
+                if (isStayDogDetection)
                 {
                     TransitionToStates(DogStates.GARDE);
                 }
@@ -144,8 +148,11 @@ public class Dog : MonoBehaviour
                 break;
             case DogStates.RUNTOTARGET:
                 OnTargetPath();
-                currentTarget = positionPlayer;
                 if (isExitDogDetection)
+                {
+                    TransitionToStates(DogStates.WALKTOGARDE);
+                }
+                if (pM.isDogged)
                 {
                     TransitionToStates(DogStates.WALKTOGARDE);
                 }
@@ -153,16 +160,15 @@ public class Dog : MonoBehaviour
                 break;
             case DogStates.WALKTOGARDE:
                 OnTargetPath();
-                currentTarget = positionGarde;
                 if (isEnterDogDetection)
                 {
                     TransitionToStates(DogStates.RUNTOTARGET);
                 }
                 if (pTD.isOnPointDog)
                 {
-                    TransitionToStates(DogStates.GARDE);
+                    TransitionToStates(DogStates.SLEEPING);
                 }
-                    break;
+                break;
         }
     }
     public void OnStatesExit()
@@ -170,6 +176,7 @@ public class Dog : MonoBehaviour
         switch (currentDogStates)
         {
             case DogStates.SLEEPING:
+                animDog.SetBool("IsSleeping", false);
                 isEnterDogDetection = false; 
                 break;
             case DogStates.GARDE:
@@ -177,10 +184,12 @@ public class Dog : MonoBehaviour
                 isExitDogDetection = false;
                 break;
             case DogStates.RUNTOTARGET:
+                pM.isDogged = false;
                 isExitDogDetection = false;
                 animDog.SetBool("IsRunning", false);
                 break;
             case DogStates.WALKTOGARDE:
+              
                 isEnterDogDetection = false;
                 animDog.SetBool("IsWalk", false);
                 break;
@@ -197,7 +206,6 @@ public class Dog : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            animDog.SetBool("IsPlayerHere", true);
             isEnterDogDetection = true;
         }
     }
@@ -207,18 +215,14 @@ public class Dog : MonoBehaviour
         {
             isStayDogDetection = true;
         }
-        else
-        {
-            isStayDogDetection = false;
-        }
     }
 
     public void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
-            animDog.SetBool("IsPlayerHere", false);
             isExitDogDetection = true;
+            isStayDogDetection = false;
         }
     }
 }

@@ -15,8 +15,8 @@ MonoBehaviour:
   tM:
     list:
     - 194.53749
-  nbrBAL_a_D: 14
+  nbrBAL_a_D: 0
   isWin: 0
   isPause: 0
   isStop: 0
-  elapsedTime: 2563.4827
+  elapsedTime: 6125.574
