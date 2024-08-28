@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3103d6d595cdbe64aa733443d4f8b6ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fullDumpster: {fileID: -400000195, guid: c02616bbaeeee6a4fae93fea94155b92, type: 3}
+  fullDumpster: {fileID: 21300000, guid: cd92ac8203a451843a596be05ca699e5, type: 3}
   emptyDumpster: {fileID: 1418978559, guid: c02616bbaeeee6a4fae93fea94155b92, type: 3}
   spriteRenderer: {fileID: 2510433497198640120}
   aS: {fileID: 2702930413743812252}
@@ -265,7 +265,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 4
-  m_Sprite: {fileID: -400000195, guid: c02616bbaeeee6a4fae93fea94155b92, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cd92ac8203a451843a596be05ca699e5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

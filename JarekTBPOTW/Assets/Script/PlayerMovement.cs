@@ -201,12 +201,14 @@ public class PlayerMovement : MonoBehaviour
                 isFallDumpster = false;
                 break;
             case States.WALLJUMP:
+                m_Animator.SetFloat("VelocityY", 0.1f);
                 aS.clip = acWallJump;
                 aS.Play();
                 _rb2D.velocity = new Vector2(-_direction.x * wallJumpForce.x, wallJumpForce.y);
                 wallJumpChrono = 0;
                 break;
             case States.WALLSLIDE:
+                m_Animator.SetBool("IsWallSlide", true); 
                 _isJumped = false;
                 currentSpeed = moveSpeed;
                 break;
@@ -221,11 +223,12 @@ public class PlayerMovement : MonoBehaviour
                 _isDashed = false;
                 break;
             case States.FLY:
+
                 flySpeed = currentSpeed;
                 aS.loop = true;
                 aS.clip = acFly;
                 aS.Play();
-                m_Animator.SetFloat("VelocityY", 0.5f);
+                m_Animator.SetBool("IsFly", true);
                 break;
         }
     }
@@ -555,6 +558,7 @@ public class PlayerMovement : MonoBehaviour
                 isDogged = false;
                 break;
             case States.WALLSLIDE:
+                m_Animator.SetBool("IsWallSlide", false);
                 break;
             case States.WALLJUMP:
                 aS.Stop();
@@ -567,6 +571,7 @@ public class PlayerMovement : MonoBehaviour
                 _rb2D.gravityScale = 1.75f;
                 break;
             case States.FLY:
+                m_Animator.SetBool("IsFly", false);
                 decelDir.x = 0f;
                 aS.loop = false;
                 aS.Stop();
