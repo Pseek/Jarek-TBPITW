@@ -12,6 +12,7 @@ public class Dog : MonoBehaviour
     public Transform positionGarde;
     public Animator animDog;
     public PositionTriggerDog pTD;
+    public LimitDog lD;
 
     public bool isEnterDogDetection = false;
     public bool isExitDogDetection = false;
@@ -153,6 +154,10 @@ public class Dog : MonoBehaviour
                     TransitionToStates(DogStates.WALKTOGARDE);
                 }
                 if (pM.isDogged)
+                {
+                    TransitionToStates(DogStates.WALKTOGARDE);
+                }
+                if (lD.isLimit)
                 {
                     TransitionToStates(DogStates.WALKTOGARDE);
                 }
