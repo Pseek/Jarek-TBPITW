@@ -114,11 +114,11 @@ public class Dog : MonoBehaviour
             case DogStates.RUNTOTARGET:
                 currentTarget = positionPlayer;
                 animDog.SetBool("IsRunning", true);
-                speedEnemy = 500f;
+                speedEnemy = 600f;
                 break;
             case DogStates.WALKTOGARDE:
                 currentTarget = positionGarde;
-                speedEnemy = 400f;
+                speedEnemy = 500f;
                 animDog.SetBool("IsWalk", true);
                 break;
         }
@@ -148,6 +148,7 @@ public class Dog : MonoBehaviour
                 }
                 break;
             case DogStates.RUNTOTARGET:
+                
                 OnTargetPath();
                 if (isExitDogDetection)
                 {
@@ -164,6 +165,7 @@ public class Dog : MonoBehaviour
                 
                 break;
             case DogStates.WALKTOGARDE:
+                
                 OnTargetPath();
                 if (isEnterDogDetection)
                 {
@@ -194,7 +196,6 @@ public class Dog : MonoBehaviour
                 animDog.SetBool("IsRunning", false);
                 break;
             case DogStates.WALKTOGARDE:
-              
                 isEnterDogDetection = false;
                 animDog.SetBool("IsWalk", false);
                 break;
