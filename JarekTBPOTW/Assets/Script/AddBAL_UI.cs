@@ -11,7 +11,7 @@ public class AddBAL_UI : MonoBehaviour
 
     public void Update()
     {
-        scoreText.text = gM.nbrBAL_a_D.ToString() + "/26";
-        scoreTextPause.text = gM.nbrBAL_a_D.ToString() + "/26";
+        scoreText.text = gM.nbrBAL_a_D.ToString() + "/24";
+        scoreTextPause.text = gM.nbrBAL_a_D.ToString() + "/24";
     }
 }

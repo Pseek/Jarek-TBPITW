@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class MailBox : MonoBehaviour
 {
     public Animator anim;
@@ -21,6 +20,7 @@ public class MailBox : MonoBehaviour
     {
         if (collision.CompareTag("Player") && pM._isInterracting)
         {
+            gM.tM.AddTimeList(gM.elapsedTime);
             gM.AddBAL(1);
             isBAL = false;
             anim.SetBool("BalAnim", true);

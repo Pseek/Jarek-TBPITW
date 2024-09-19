@@ -225,7 +225,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 650, y: -10}
+  m_AnchoredPosition: {x: 575, y: 30}
   m_SizeDelta: {x: 500, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &689952466
@@ -280,8 +280,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1363,7 +1363,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -643, y: -10}
+  m_AnchoredPosition: {x: -575, y: 30}
   m_SizeDelta: {x: 600, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1799073730
@@ -1394,10 +1394,17 @@ MonoBehaviour:
 
     Dash = WestButton
 
-    Interract
-    = EastButton
+    SuperJump
+    = Dash + Jump en meme temps
 
-    Planer = (in air) SouthButton'
+    Interract = EastButton
+
+    Fly (in air) = 
+    SouthButton
+
+    PauseMenu = StartButton
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7e384df098691194d83616581b652358, type: 2}
   m_sharedMaterial: {fileID: 2656653703394486280, guid: 7e384df098691194d83616581b652358, type: 2}
@@ -1424,8 +1431,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1952,7 +1959,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Jarek the Best Postman in the World
 
-    LvL1 Prototype'
+    LvL1 Prototype V2'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7e384df098691194d83616581b652358, type: 2}
   m_sharedMaterial: {fileID: 2656653703394486280, guid: 7e384df098691194d83616581b652358, type: 2}
@@ -1979,8 +1986,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
