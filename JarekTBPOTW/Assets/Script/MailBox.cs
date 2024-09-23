@@ -20,7 +20,6 @@ public class MailBox : MonoBehaviour
     {
         if (collision.CompareTag("Player") && pM._isInterracting)
         {
-            gM.tM.AddTimeList(gM.elapsedTime);
             gM.AddBAL(1);
             isBAL = false;
             anim.SetBool("BalAnim", true);

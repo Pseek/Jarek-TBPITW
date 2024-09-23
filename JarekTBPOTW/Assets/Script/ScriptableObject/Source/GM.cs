@@ -6,38 +6,13 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using System.IO;
 using Unity.VisualScripting;
+using Unity.Collections;
 
 [System.Serializable]
 public class TimerList
 {
     public List<float> list = new List<float>();
 
-    /*public List<float> listTimerBal1 = new List<float>();
-    public List<float> listTimerBal2 = new List<float>();
-    public List<float> listTimerBal3 = new List<float>();
-    public List<float> listTimerBal4 = new List<float>();
-    public List<float> listTimerBal5 = new List<float>();
-    public List<float> listTimerBal6 = new List<float>();
-    public List<float> listTimerBal7 = new List<float>();
-    public List<float> listTimerBal8 = new List<float>();
-    public List<float> listTimerBal9 = new List<float>();
-    public List<float> listTimerBal10 = new List<float>();
-    public List<float> listTimerBal11 = new List<float>();
-    public List<float> listTimerBal12 = new List<float>();
-    public List<float> listTimerBal13 = new List<float>();
-    public List<float> listTimerBal14 = new List<float>();
-    public List<float> listTimerBal15 = new List<float>();
-    public List<float> listTimerBal16 = new List<float>();
-    public List<float> listTimerBal17 = new List<float>();
-    public List<float> listTimerBal18 = new List<float>();
-    public List<float> listTimerBal19 = new List<float>();
-    public List<float> listTimerBal20 = new List<float>();
-    public List<float> listTimerBal21 = new List<float>();
-    public List<float> listTimerBal22 = new List<float>();
-    public List<float> listTimerBal23 = new List<float>();
-    public List<float> listTimerBal24 = new List<float>();*/
-
-    public List<List<float>> listTimerBAL = new List<List<float>>();
     public void SortList()
     {
         list = list.OrderBy(time => time).ToList();
@@ -47,21 +22,24 @@ public class TimerList
         list.Add(time);
         SortList();
     }
-
-    public void AddList(List<float> timerListAddBal)
-    {
-        listTimerBAL.Add(timerListAddBal);
-    }
+}
+[System.Serializable]
+public class RunData
+{
+    public List<float> listTimerBAL = new List<float>();
 }
 
 [CreateAssetMenu(fileName = "Gamemanager", menuName =("Gm"))]
 public class GM : ScriptableObject
 {
+    private CompareTimeUI cTUI;
+    public RunData rD;
     public TimerList tM;
     public int nbrBAL_a_D;
     public bool isWin = false;
     public bool isPause = false;
     public bool isStop = false;
+    public bool isCheckpoint = false;
     public float elapsedTime;
 
     string filePath = Application.streamingAssetsPath + "/words.json";
@@ -97,14 +75,18 @@ public class GM : ScriptableObject
     public void AddBAL (int paper)
     {
         nbrBAL_a_D += paper;
-        for (int i = 0; i < nbrBAL_a_D; i++)
+        int i = nbrBAL_a_D - 1;
+        if (rD.listTimerBAL[i] == 0)
         {
-            //tM.AddList();
-            Debug.Log("j'ajoute une liste");
+            rD.listTimerBAL.RemoveAt(i);
+            rD.listTimerBAL.Insert(i, elapsedTime);
+        }
+        else if (rD.listTimerBAL[i] > elapsedTime)
+        {
+            rD.listTimerBAL.RemoveAt(i);
+            rD.listTimerBAL.Insert(i, elapsedTime);
         }
     }
-
-    
 
     public void ChangesScene(string nameScene)
     {
@@ -125,5 +107,4 @@ public class GM : ScriptableObject
     {
         Time.timeScale = 1;
     }
-
 }

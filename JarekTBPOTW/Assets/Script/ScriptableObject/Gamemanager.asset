@@ -12,14 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8436c16e32f662845bd20188536946ed, type: 3}
   m_Name: Gamemanager
   m_EditorClassIdentifier: 
+  rD:
+    listTimerBAL:
+    - 0
+    - 0
+    - 0
+    - 46.25249
+    - 66.49143
+    - 71.13239
+    - 78.23344
+    - 102.526215
+    - 108.31312
+    - 113.569885
+    - 125.09068
+    - 131.93143
+    - 136.29066
+    - 138.15114
+    - 144.68944
+    - 146.65283
+    - 148.99123
+    - 153.8504
+    - 159.77097
+    - 164.47252
   tM:
     list:
-    - 3.53
-    - 5.6028757
-    - 7.335752
-    - 24.5848
-  nbrBAL_a_D: 1
+    - 172.33272
+  nbrBAL_a_D: 24
   isWin: 0
   isPause: 0
-  isStop: 0
-  elapsedTime: 22.33579
+  isStop: 1
+  isCheckpoint: 0
+  elapsedTime: 186.9155
