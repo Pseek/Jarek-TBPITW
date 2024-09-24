@@ -1158,7 +1158,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &367398514
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4332,6 +4332,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 761482675}
   scoreTextPause: {fileID: 1752666624}
+  scoreTextCompare: {fileID: 1463013037}
   gM: {fileID: 11400000, guid: 5627ebe77504b864c82ddea469d2f717, type: 2}
 --- !u!114 &1442182493
 MonoBehaviour:
@@ -4391,8 +4392,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gM: {fileID: 11400000, guid: 5627ebe77504b864c82ddea469d2f717, type: 2}
+  tCUI: {fileID: 367398513}
   timerCurrentTime: {fileID: 948385585}
   timercCompareTime: {fileID: 540824931}
+  chrono: 0
 --- !u!1 &1463013035
 GameObject:
   m_ObjectHideFlags: 0

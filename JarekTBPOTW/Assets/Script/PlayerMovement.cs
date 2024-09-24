@@ -223,7 +223,6 @@ public class PlayerMovement : MonoBehaviour
                 _isDashed = false;
                 break;
             case States.FLY:
-
                 flySpeed = currentSpeed;
                 aS.loop = true;
                 aS.clip = acFly;

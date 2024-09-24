@@ -26,15 +26,20 @@ public class TimerList
 [System.Serializable]
 public class RunData
 {
-    public List<float> listTimerBAL = new List<float>();
+    public List<float> listTimerBALData = new List<float>(24);
+}
+[System.Serializable]
+public class RunCurrent
+{
+    public List<float> listTimerBALCurrent = new List<float>(24);
 }
 
 [CreateAssetMenu(fileName = "Gamemanager", menuName =("Gm"))]
 public class GM : ScriptableObject
 {
-    private CompareTimeUI cTUI;
     public RunData rD;
     public TimerList tM;
+    public RunCurrent rC;
     public int nbrBAL_a_D;
     public bool isWin = false;
     public bool isPause = false;
@@ -48,12 +53,13 @@ public class GM : ScriptableObject
     public void Save()
     {
         string json = JsonUtility.ToJson(tM);
+        string json2 = JsonUtility.ToJson(rD);
 
         if (!File.Exists(filePath))
         {
             File.Create(filePath).Close();
         }
-        File.WriteAllText(filePath, json);
+        File.WriteAllText(filePath, json + json2);
     }
 
     [ContextMenu("Load")]
@@ -61,7 +67,9 @@ public class GM : ScriptableObject
     public void Load()
     {
         string json = File.ReadAllText(filePath);
+        string json2 = File.ReadAllText(filePath);
         tM = JsonUtility.FromJson<TimerList>(json);
+        rD = JsonUtility.FromJson<RunData>(json2);
     }
     
     public void RemoveBAL()
@@ -72,19 +80,23 @@ public class GM : ScriptableObject
         isStop = false;
     }
     
-    public void AddBAL (int paper)
+    public void AddBAL(int paper)
     {
         nbrBAL_a_D += paper;
         int i = nbrBAL_a_D - 1;
-        if (rD.listTimerBAL[i] == 0)
+        rC.listTimerBALCurrent.RemoveAt(i);
+        rC.listTimerBALCurrent.Insert(i, elapsedTime);
+        if (rD.listTimerBALData[i] == 0)
         {
-            rD.listTimerBAL.RemoveAt(i);
-            rD.listTimerBAL.Insert(i, elapsedTime);
+            rD.listTimerBALData.RemoveAt(i);
+            rD.listTimerBALData.Insert(i, elapsedTime);
+            Save();
         }
-        else if (rD.listTimerBAL[i] > elapsedTime)
+        if (rD.listTimerBALData[i] > elapsedTime)
         {
-            rD.listTimerBAL.RemoveAt(i);
-            rD.listTimerBAL.Insert(i, elapsedTime);
+            rD.listTimerBALData.RemoveAt(i);
+            rD.listTimerBALData.Insert(i, elapsedTime);
+            Save();
         }
     }
 
