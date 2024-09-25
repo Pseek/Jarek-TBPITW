@@ -23,6 +23,9 @@ public class Dog : MonoBehaviour
 
     public Transform enemyGFX;
 
+    public AudioClip acDogBark;
+    public AudioSource asDog;
+
     Path path;
     int currentWaypoint = 0;
     public bool reachedEndOfPath = false;
@@ -89,13 +92,13 @@ public class Dog : MonoBehaviour
             currentWaypoint++;
         }
 
-        if (rb2D.velocity.x >= 0.01f)
+        if (rb2D.velocity.x > 0f)
         {
-            enemyGFX.localScale = new Vector3(-1f, 1f, 1f);
+            enemyGFX.localEulerAngles = new Vector3(0, 180, 0);
         }
-        else if (rb2D.velocity.x <= -0.01f)
+        else if (rb2D.velocity.x < 0f)
         {
-            enemyGFX.localScale = new Vector3(1f, 1f, 1f);
+            enemyGFX.localEulerAngles = new Vector3(0, 0, 0);
         }
     }
     public void OnStatesEnter()
@@ -139,6 +142,14 @@ public class Dog : MonoBehaviour
                 }
                 break;
             case DogStates.GARDE:
+                if (positionPlayer.localPosition.x > transform.position.x)
+                {
+                    enemyGFX.localEulerAngles = new Vector3(0, 180, 0);
+                }
+                else if (positionPlayer.localPosition.x < transform.position.x)
+                {
+                    enemyGFX.localEulerAngles = new Vector3(0, 0, 0);
+                }
                 if (isExitDogDetection)
                 {
                     TransitionToStates(DogStates.SLEEPING);
@@ -154,6 +165,8 @@ public class Dog : MonoBehaviour
                 
                 if (pM.isDogged)
                 {
+                    asDog.clip = acDogBark;
+                    asDog.Play();
                     TransitionToStates(DogStates.WALKTOGARDE);
                 }
                 if (lD.isLimit)

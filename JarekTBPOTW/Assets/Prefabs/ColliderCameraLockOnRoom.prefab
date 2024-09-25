@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   virtualCam: {fileID: 4332890179132148980}
-  musicBox: {fileID: 0}
+  aS: {fileID: 0}
 --- !u!1 &3634989304753121213
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,14 +8,16 @@ using UnityEngine;
 public class TransitionRoom : MonoBehaviour
 {
     public GameObject virtualCam;
-    public GameObject musicBox;
-
+    public AudioSource aS;
+    public AudioClip acRoom;
+   
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && !collision.isTrigger)
         {
             virtualCam.SetActive(true);
-            musicBox.SetActive(true);
+            aS.clip = acRoom;
+            aS.Play();          
             gameObject.transform.Find("GrEnemyPoint").gameObject.SetActive(true);
         }
     }
@@ -25,7 +27,6 @@ public class TransitionRoom : MonoBehaviour
         if (collision.CompareTag("Player") && !collision.isTrigger)
         {
             virtualCam.SetActive(false);
-            musicBox.SetActive(false);
             gameObject.transform.Find("GrEnemyPoint").gameObject.SetActive(false);
         }
     }
