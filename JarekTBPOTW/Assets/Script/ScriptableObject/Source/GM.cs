@@ -47,7 +47,8 @@ public class GM : ScriptableObject
     public bool isCheckpoint = false;
     public float elapsedTime;
 
-    string filePath = Application.streamingAssetsPath + "/words.json";
+    string filePath = Application.streamingAssetsPath + "/ListTimerEnd.json";
+    string filePath2 = Application.streamingAssetsPath + "/ListTimerBAL.json";
 
     [ContextMenu("Save")]
     public void Save()
@@ -55,11 +56,13 @@ public class GM : ScriptableObject
         string json = JsonUtility.ToJson(tM);
         string json2 = JsonUtility.ToJson(rD);
 
-        if (!File.Exists(filePath))
+        if (!File.Exists(filePath) && !File.Exists(filePath2))
         {
             File.Create(filePath).Close();
+            File.Create(filePath2).Close();
         }
-        File.WriteAllText(filePath, json + json2);
+        File.WriteAllText(filePath, json);
+        File.WriteAllText(filePath2, json2);
     }
 
     [ContextMenu("Load")]
@@ -67,7 +70,7 @@ public class GM : ScriptableObject
     public void Load()
     {
         string json = File.ReadAllText(filePath);
-        string json2 = File.ReadAllText(filePath);
+        string json2 = File.ReadAllText(filePath2);
         tM = JsonUtility.FromJson<TimerList>(json);
         rD = JsonUtility.FromJson<RunData>(json2);
     }
