@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -38,7 +39,6 @@ public class PlayerMovement : MonoBehaviour
     private float _coyoteCounterTime;
     private int _canCoyote;
     private float flySpeed;
-    private float fallSpeed;
     private float jumpSpeed;
 
     [Header("Dash")]
@@ -68,11 +68,24 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 wallCheckerSize = Vector2.one;
     public Transform wallCheckerTransformRight;
 
+    [Header("SlopeDectection")]
+    public LayerMask slopeLayer;
+    public Vector2 slopeCheckerSize = Vector2.one;
+    public Transform slopeCheckerTransformRight;
+
     [Header("Speed")]
     public float moveSpeed;
     public float currentSpeed;
     public float decelSpeed;
     public Vector2 decelDir;
+
+    //[Header("TutoSlope")]
+    [SerializeField]
+    private float slopeCheckDistance;
+    private float slopeDownAngle;
+    private float slopeDownAngleOld;
+    private Vector2 slopeNormalPerp;
+    private bool isOnSloped;
 
     public enum States
     {
@@ -84,7 +97,6 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _rb2D = GetComponent<Rigidbody2D>();
-
     }
     void Start()
     {
@@ -94,14 +106,34 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        Collider2D ground = Physics2D.OverlapBox(groundCheckerTransform.position, groundCheckerSize, 0f, groundLayer);
-        Collider2D wallRight = Physics2D.OverlapBox(wallCheckerTransformRight.position, wallCheckerSize, 0f, wallLayer);
-        m_Animator.SetBool("IsGrounded", _isGrounded);
+        FlipGraphics();
+        MenuPauseND();
+        WallCheck();
+        GroundCheck();
+        OnStatesUpdate();
+        //SlopeCheck();
+    }
 
+    /*private void SlopeCheck()
+    {
+        Collider2D slope = Physics2D.OverlapBox(slopeCheckerTransformRight.position, slopeCheckerSize, 0f, slopeLayer);
+        if (slope != null)
+        {
+
+        }
+    }*/
+
+    public void MenuPauseND()
+    {
         if (Time.timeScale == 0f)
         {
             _direction.x = 0f;
         }
+    }
+
+    public void GroundCheck()
+    {
+        Collider2D ground = Physics2D.OverlapBox(groundCheckerTransform.position, groundCheckerSize, 0f, groundLayer);
 
         if (ground != null)
         {
@@ -112,6 +144,12 @@ public class PlayerMovement : MonoBehaviour
         {
             _isGrounded = false;
         }
+        m_Animator.SetBool("IsGrounded", _isGrounded);
+    }
+
+    public void WallCheck()
+    {
+        Collider2D wallRight = Physics2D.OverlapBox(wallCheckerTransformRight.position, wallCheckerSize, 0f, wallLayer);
 
         if (wallRight != null)
         {
@@ -122,7 +160,10 @@ public class PlayerMovement : MonoBehaviour
         {
             _isOnWall = false;
         }
+    }
 
+    public void FlipGraphics()
+    {
         if (_velocity.x < 0f)
         {
             gameObject.transform.localEulerAngles = new Vector3(0, 180, 0);
@@ -131,10 +172,8 @@ public class PlayerMovement : MonoBehaviour
         {
             gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
-
-        OnStatesUpdate();
     }
-
+    
     private void OnDrawGizmos()
     {
         if (_isGrounded)
@@ -165,6 +204,7 @@ public class PlayerMovement : MonoBehaviour
         switch (currentStates)
         {
             case States.ILDE:
+                
                 currentSpeed = moveSpeed;
                 _canCoyote = 0;
                 m_Animator.SetFloat("VelocityX", 0f);

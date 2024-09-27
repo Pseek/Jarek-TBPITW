@@ -41,6 +41,7 @@ public class GM : ScriptableObject
     public TimerList tM;
     public RunCurrent rC;
     public int nbrBAL_a_D;
+    public int nbrBALEndUI;
     public bool isWin = false;
     public bool isPause = false;
     public bool isStop = false;

@@ -8,8 +8,9 @@ public class EndCheck : MonoBehaviour
     public PlayerMovement pM;
     public GameObject EndIndication;
     public GameObject ArrowIndication;
-    
-
+    public int nbrBalEnd;
+    public int nbrBalRestant;
+  
     public void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && pM._isInterracting && gM.nbrBAL_a_D > 19)
@@ -23,7 +24,8 @@ public class EndCheck : MonoBehaviour
 
     public void Update()
     {
-        if (gM.nbrBAL_a_D > 19)
+        gM.nbrBALEndUI = nbrBalEnd + nbrBalRestant;
+        if (gM.nbrBAL_a_D > nbrBalEnd)
         { 
             EndIndication.SetActive(true);
             ArrowIndication.SetActive(true);
