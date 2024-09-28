@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -79,13 +80,25 @@ public class PlayerMovement : MonoBehaviour
     public float decelSpeed;
     public Vector2 decelDir;
 
-    //[Header("TutoSlope")]
+    [Header("TutoSlope")]
     [SerializeField]
     private float slopeCheckDistance;
+    [SerializeField]
+    private float maxSlopeAngle;
+    [SerializeField]
+    private PhysicsMaterial2D zeroF;
+    [SerializeField]
+    private PhysicsMaterial2D fullF;
+    [SerializeField]
+    private PhysicsMaterial2D normalF;
+    private CapsuleCollider2D cc;
     private float slopeDownAngle;
     private float slopeDownAngleOld;
+    private float slopeSideAngle;
     private Vector2 slopeNormalPerp;
-    private bool isOnSloped;
+    private Vector2 capsuleColliderSize;
+    private bool isOnSlope;
+    private bool canWalkOnSlope;
 
     public enum States
     {
@@ -102,6 +115,9 @@ public class PlayerMovement : MonoBehaviour
     {
         currentSpeed = moveSpeed;
         _rb2D.freezeRotation = true;
+        cc = GetComponent<CapsuleCollider2D>();
+
+        capsuleColliderSize = cc.size;
     }
 
     void Update()
@@ -111,18 +127,84 @@ public class PlayerMovement : MonoBehaviour
         WallCheck();
         GroundCheck();
         OnStatesUpdate();
-        //SlopeCheck();
+        SlopeCheck();
     }
 
-    /*private void SlopeCheck()
+    private void SlopeCheck()
     {
-        Collider2D slope = Physics2D.OverlapBox(slopeCheckerTransformRight.position, slopeCheckerSize, 0f, slopeLayer);
-        if (slope != null)
+        Vector2 checkPos = transform.position - (Vector3)(new Vector2(0.0f, capsuleColliderSize.y / 2));
+
+        SlopeCheckHorizontal(checkPos);
+        SlopeCheckVertical(checkPos);
+    }
+
+    private void SlopeCheckHorizontal(Vector2 checkPos)
+    {
+        RaycastHit2D slopeHitFront = Physics2D.Raycast(checkPos, transform.right, slopeCheckDistance, groundLayer);
+        RaycastHit2D slopeHitBack = Physics2D.Raycast(checkPos, -transform.right, slopeCheckDistance, groundLayer);
+
+        if (slopeHitFront)
         {
+            isOnSlope = true;
+
+            slopeSideAngle = Vector2.Angle(slopeHitFront.normal, Vector2.up);
 
         }
-    }*/
+        else if (slopeHitBack)
+        {
+            isOnSlope = true;
 
+            slopeSideAngle = Vector2.Angle(slopeHitBack.normal, Vector2.up);
+        }
+        else
+        {
+            slopeSideAngle = 0.0f;
+            isOnSlope = false;
+        }
+    }
+    private void SlopeCheckVertical(Vector2 checkPos)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(checkPos, Vector2.down, slopeCheckDistance, groundLayer);
+
+        if (hit)
+        {
+
+            slopeNormalPerp = Vector2.Perpendicular(hit.normal).normalized;
+
+            slopeDownAngle = Vector2.Angle(hit.normal, Vector2.up);
+
+            if (slopeDownAngle != slopeDownAngleOld)
+            {
+                isOnSlope = true;
+            }
+
+            slopeDownAngleOld = slopeDownAngle;
+
+            Debug.DrawRay(hit.point, slopeNormalPerp, Color.blue);
+            Debug.DrawRay(hit.point, hit.normal, Color.green);
+            if (slopeDownAngle > maxSlopeAngle || slopeSideAngle > maxSlopeAngle)
+            {
+                canWalkOnSlope = false;
+            }
+            else
+            {
+                canWalkOnSlope = true;
+            }
+
+            if(isOnSlope && canWalkOnSlope && _direction.x == 0.0f)
+            {
+                _rb2D.sharedMaterial = fullF;
+            }
+            else if (isOnSlope && canWalkOnSlope && _direction.x != 0.0f)
+            {
+                _rb2D.sharedMaterial = zeroF;
+            }
+            else
+            {
+                _rb2D.sharedMaterial = normalF;
+            }
+        }
+    }
     public void MenuPauseND()
     {
         if (Time.timeScale == 0f)
@@ -306,14 +388,23 @@ public class PlayerMovement : MonoBehaviour
                     _velocity.x = decelDir.x * currentSpeed;
                     _velocity.y = _rb2D.velocity.y;
                 }
-                else
+                else if (_isGrounded && isOnSlope && !_isJumped && canWalkOnSlope)
+                { 
+                    currentSpeed = moveSpeed;
+                    _velocity.x = -_direction.x * currentSpeed * slopeNormalPerp.x;
+                    _velocity.y = -_direction.x * currentSpeed * slopeNormalPerp.y;
+                    decelDir = _direction;
+                }
+                else 
                 {
                     currentSpeed = moveSpeed;
                     _velocity.x = _direction.x * currentSpeed;
                     _velocity.y = _rb2D.velocity.y;
                     decelDir = _direction;
+                    
                 }
 
+                
                 _rb2D.velocity = _velocity;
 
                 if (currentSpeed == 0f)
