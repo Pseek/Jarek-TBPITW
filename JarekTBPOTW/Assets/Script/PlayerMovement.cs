@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public float fallDumpsterSpeed;
     public bool canGetUp = false;
     public bool isFallDumpster = false;
-    public float buffSpeed;
+    public float buffJumpForce;
     public Animator m_Animator;
     public bool isDogged = false;
    
@@ -403,7 +403,6 @@ public class PlayerMovement : MonoBehaviour
                     decelDir = _direction;
                     
                 }
-
                 
                 _rb2D.velocity = _velocity;
 
@@ -807,9 +806,9 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator GetSpeedUp()
     {
-        moveSpeed = buffSpeed;
+        jumpForce = buffJumpForce;
         yield return new WaitForSeconds(15f);
-        moveSpeed = 7.5f;
+        jumpForce = 10f;
         StopCoroutine(GetSpeedUp());
     }
 

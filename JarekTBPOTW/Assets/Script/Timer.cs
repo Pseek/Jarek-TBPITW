@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Rendering;
 
 public class Timer : MonoBehaviour
 {
     public GM gM;
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI timerPause;
-   
+    void Awake()
+    {
+        Time.timeScale = 0f;
+    }
     void Update()
     {
         gM.elapsedTime += Time.deltaTime;

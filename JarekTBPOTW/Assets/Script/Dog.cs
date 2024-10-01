@@ -14,11 +14,14 @@ public class Dog : MonoBehaviour
     public PositionTriggerDog pTD;
     public LimitDog lD;
 
+    public float moveSpeedRTT;
+    public float moveSpeedWTG;
+
     public bool isEnterDogDetection = false;
     public bool isExitDogDetection = false;
     public bool isStayDogDetection = false;
 
-    public float speedEnemy = 200f;
+    public float speedEnemy;
     public float nextWaypointDistance = 3f;
 
     public Transform enemyGFX;
@@ -84,6 +87,7 @@ public class Dog : MonoBehaviour
         Vector2 force = direction * speedEnemy * Time.deltaTime;
 
         rb2D.AddForce(force);
+        Debug.Log(force);
 
         float distance = Vector2.Distance(rb2D.position, path.vectorPath[currentWaypoint]);
 
@@ -110,19 +114,18 @@ public class Dog : MonoBehaviour
                 animDog.SetBool("IsSleeping", true);
                 break;
             case DogStates.GARDE:
-                speedEnemy = 0f;
                 animDog.SetBool("IsPlayerHere", true);
                 animDog.SetBool("IsGarde", true);
                 break;
             case DogStates.RUNTOTARGET:
                 currentTarget = positionPlayer;
                 animDog.SetBool("IsRunning", true);
-                speedEnemy = 700f;
+                speedEnemy = moveSpeedRTT;
                 break;
             case DogStates.WALKTOGARDE:
                 Physics2D.IgnoreLayerCollision(9,10,true);
                 currentTarget = positionGarde;
-                speedEnemy = 600f;
+                speedEnemy = moveSpeedWTG;
                 animDog.SetBool("IsWalk", true);
                 break;
         }
@@ -162,6 +165,7 @@ public class Dog : MonoBehaviour
             case DogStates.RUNTOTARGET:
                 
                 OnTargetPath();
+                
                 
                 if (pM.isDogged)
                 {

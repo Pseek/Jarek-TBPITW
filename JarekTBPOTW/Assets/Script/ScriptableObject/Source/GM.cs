@@ -90,18 +90,6 @@ public class GM : ScriptableObject
         int i = nbrBAL_a_D - 1;
         rC.listTimerBALCurrent.RemoveAt(i);
         rC.listTimerBALCurrent.Insert(i, elapsedTime);
-        if (rD.listTimerBALData[i] == 0)
-        {
-            rD.listTimerBALData.RemoveAt(i);
-            rD.listTimerBALData.Insert(i, elapsedTime);
-            Save();
-        }
-        if (rD.listTimerBALData[i] > elapsedTime)
-        {
-            rD.listTimerBALData.RemoveAt(i);
-            rD.listTimerBALData.Insert(i, elapsedTime);
-            Save();
-        }
     }
 
     public void ChangesScene(string nameScene)
