@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rD:
     listTimerBALData:
-    - 4.0568404
+    - 0
     - 0
     - 0
     - 0
@@ -42,7 +42,7 @@ MonoBehaviour:
     list: []
   rC:
     listTimerBALCurrent:
-    - 4.0504546
+    - 0
     - 0
     - 0
     - 0
@@ -71,5 +71,5 @@ MonoBehaviour:
   isWin: 0
   isPause: 0
   isStop: 0
-  isCheckpoint: 0
-  elapsedTime: 10.573645
+  isCheckpoint: 1
+  elapsedTime: 21.659336
