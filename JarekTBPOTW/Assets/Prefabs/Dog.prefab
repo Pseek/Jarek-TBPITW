@@ -116,7 +116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6163380100810441169}
   - component: {fileID: 7486803164252590352}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: BoxDetection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,7 +236,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0.75
   m_AngularDrag: 0.05
-  m_GravityScale: 1.75
+  m_GravityScale: 2.25
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -341,8 +341,8 @@ MonoBehaviour:
   animDog: {fileID: 1160770848061272036}
   pTD: {fileID: 0}
   lD: {fileID: 0}
-  moveSpeedRTT: 1000
-  moveSpeedWTG: 800
+  moveSpeedRTT: 5
+  moveSpeedWTG: 4
   isEnterDogDetection: 0
   isExitDogDetection: 0
   isStayDogDetection: 0

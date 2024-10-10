@@ -16,6 +16,7 @@ public class Dog : MonoBehaviour
 
     public float moveSpeedRTT;
     public float moveSpeedWTG;
+ 
 
     public bool isEnterDogDetection = false;
     public bool isExitDogDetection = false;
@@ -63,7 +64,7 @@ public class Dog : MonoBehaviour
             currentWaypoint = 0;
         }
     }
-    private void Update()
+    private void FixedUpdate()
     {
         OnStatesUpdate();
     }
@@ -84,11 +85,10 @@ public class Dog : MonoBehaviour
         }
 
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb2D.position).normalized;
-        Vector2 force = direction * speedEnemy * Time.deltaTime;
-
-        rb2D.AddForce(force);
-        Debug.Log(force);
-
+        Vector2 forceDog = direction * speedEnemy;
+        
+        rb2D.velocity = forceDog;
+        
         float distance = Vector2.Distance(rb2D.position, path.vectorPath[currentWaypoint]);
 
         if (distance < nextWaypointDistance)
@@ -96,11 +96,11 @@ public class Dog : MonoBehaviour
             currentWaypoint++;
         }
 
-        if (rb2D.velocity.x > 0f)
+        if (rb2D.velocity.x > 0.01f)
         {
             enemyGFX.localEulerAngles = new Vector3(0, 180, 0);
         }
-        else if (rb2D.velocity.x < 0f)
+        else if (rb2D.velocity.x < 0.01f)
         {
             enemyGFX.localEulerAngles = new Vector3(0, 0, 0);
         }
@@ -114,16 +114,17 @@ public class Dog : MonoBehaviour
                 animDog.SetBool("IsSleeping", true);
                 break;
             case DogStates.GARDE:
+                Physics2D.IgnoreLayerCollision(9, 10, true);
                 animDog.SetBool("IsPlayerHere", true);
                 animDog.SetBool("IsGarde", true);
                 break;
             case DogStates.RUNTOTARGET:
+                Physics2D.IgnoreLayerCollision(9, 10, false);
                 currentTarget = positionPlayer;
                 animDog.SetBool("IsRunning", true);
                 speedEnemy = moveSpeedRTT;
                 break;
             case DogStates.WALKTOGARDE:
-                Physics2D.IgnoreLayerCollision(9,10,true);
                 currentTarget = positionGarde;
                 speedEnemy = moveSpeedWTG;
                 animDog.SetBool("IsWalk", true);
@@ -209,12 +210,12 @@ public class Dog : MonoBehaviour
                 isExitDogDetection = false;
                 break;
             case DogStates.RUNTOTARGET:
+                Physics2D.IgnoreLayerCollision(9, 10, true);
                 pM.isDogged = false;
                 isExitDogDetection = false;
                 animDog.SetBool("IsRunning", false);
                 break;
             case DogStates.WALKTOGARDE:
-                Physics2D.IgnoreLayerCollision(9, 10, false);
                 isEnterDogDetection = false;
                 animDog.SetBool("IsWalk", false);
                 break;
