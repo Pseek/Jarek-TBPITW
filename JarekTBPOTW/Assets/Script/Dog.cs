@@ -64,7 +64,7 @@ public class Dog : MonoBehaviour
             currentWaypoint = 0;
         }
     }
-    private void FixedUpdate()
+    private void Update()
     {
         OnStatesUpdate();
     }
@@ -85,9 +85,9 @@ public class Dog : MonoBehaviour
         }
 
         Vector2 direction = ((Vector2)path.vectorPath[currentWaypoint] - rb2D.position).normalized;
-        Vector2 forceDog = direction * speedEnemy;
+        Vector2 movementDog = new Vector2 (direction.x * speedEnemy, direction.y * 0.01f);
         
-        rb2D.velocity = forceDog;
+        rb2D.velocity = movementDog;
         
         float distance = Vector2.Distance(rb2D.position, path.vectorPath[currentWaypoint]);
 
@@ -96,11 +96,11 @@ public class Dog : MonoBehaviour
             currentWaypoint++;
         }
 
-        if (rb2D.velocity.x > 0.01f)
+        if(currentTarget.position.x > transform.position.x)
         {
             enemyGFX.localEulerAngles = new Vector3(0, 180, 0);
         }
-        else if (rb2D.velocity.x < 0.01f)
+        else if (currentTarget.position.x < transform.position.x)
         {
             enemyGFX.localEulerAngles = new Vector3(0, 0, 0);
         }
