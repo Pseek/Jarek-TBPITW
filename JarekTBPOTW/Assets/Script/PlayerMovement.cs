@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     public bool canGetUp = false;
     public bool isFallDumpster = false;
     public float buffJumpForce;
+    public float buffMoveSpeed;
     public Animator m_Animator;
     public bool isDogged = false;
    
@@ -804,17 +805,19 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine(FallDumpster());
     }
 
-    IEnumerator GetSpeedUp()
+    IEnumerator BuffPlayer()
     {
         jumpForce = buffJumpForce;
+        moveSpeed = buffMoveSpeed;
         yield return new WaitForSeconds(15f);
         jumpForce = 10f;
-        StopCoroutine(GetSpeedUp());
+        moveSpeed = 7.5f;
+        StopCoroutine(BuffPlayer());
     }
 
     public void GetBuffSpeed()
     {
-        StartCoroutine(GetSpeedUp());
+        StartCoroutine(BuffPlayer());
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

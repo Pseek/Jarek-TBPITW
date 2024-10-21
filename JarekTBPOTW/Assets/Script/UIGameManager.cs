@@ -16,19 +16,19 @@ public class UIGameManager : MonoBehaviour
 
     public void Update()
     {
-        if(gM.elapsedTime >= 180f)
+        if(gM.elapsedTime >= 120f)
         {
             medaillePosition.sprite = medailleNull;
         }
-        else if (gM.elapsedTime >= 150f)
+        else if (gM.elapsedTime >= 90f)
         {
             medaillePosition.sprite = medailleBronze;
         }
-        else if (gM.elapsedTime >= 120f)
+        else if (gM.elapsedTime >= 60f)
         {
             medaillePosition.sprite = medailleDargent;
         }
-        else if (gM.elapsedTime < 120f)
+        else if (gM.elapsedTime < 60f)
         {
             medaillePosition.sprite = medailleDor;
         }               

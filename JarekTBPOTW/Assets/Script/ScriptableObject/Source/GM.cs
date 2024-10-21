@@ -26,12 +26,12 @@ public class TimerList
 [System.Serializable]
 public class RunData
 {
-    public List<float> listTimerBALData = new List<float>(24);
+    public List<float> listTimerBALData = new List<float>(15);
 }
 [System.Serializable]
 public class RunCurrent
 {
-    public List<float> listTimerBALCurrent = new List<float>(24);
+    public List<float> listTimerBALCurrent = new List<float>(15);
 }
 
 [CreateAssetMenu(fileName = "Gamemanager", menuName =("Gm"))]

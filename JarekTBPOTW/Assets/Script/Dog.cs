@@ -110,12 +110,10 @@ public class Dog : MonoBehaviour
         switch (currentDogStates)
         {
             case DogStates.SLEEPING:
-                animDog.SetBool("IsPlayerHere", false);
                 animDog.SetBool("IsSleeping", true);
                 break;
             case DogStates.GARDE:
                 Physics2D.IgnoreLayerCollision(9, 10, true);
-                animDog.SetBool("IsPlayerHere", true);
                 animDog.SetBool("IsGarde", true);
                 break;
             case DogStates.RUNTOTARGET:
@@ -164,10 +162,9 @@ public class Dog : MonoBehaviour
                 }
                 break;
             case DogStates.RUNTOTARGET:
-                
+
                 OnTargetPath();
-                
-                
+
                 if (pM.isDogged)
                 {
                     asDog.clip = acDogBark;
