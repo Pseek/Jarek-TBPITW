@@ -12,11 +12,19 @@ public class Dog : MonoBehaviour
     public Transform positionGarde;
     public Animator animDog;
     public PositionTriggerDog pTD;
-    public LimitDog lD;
+
+    private float chronoToAttack;
+    [SerializeField] private float timerToAttack;
+    [SerializeField] private bool dogHasAttacked = false;
+
 
     public float moveSpeedRTT;
     public float moveSpeedWTG;
- 
+
+    [SerializeField] private LayerMask layerLimitDog;
+    [SerializeField] private Transform boxDetectionLimitDog;
+    [SerializeField] private Vector2 sizeBoxDetectionLimitDog;
+    [SerializeField] private bool isLimit = false;
 
     public bool isEnterDogDetection = false;
     public bool isExitDogDetection = false;
@@ -67,6 +75,35 @@ public class Dog : MonoBehaviour
     private void Update()
     {
         OnStatesUpdate();
+        LimitDogDetection();
+    }
+
+    public void LimitDogDetection()
+    {
+        Collider2D limitDogDectection = Physics2D.OverlapBox(boxDetectionLimitDog.position, sizeBoxDetectionLimitDog,0f, layerLimitDog);
+
+        if(limitDogDectection != null)
+        {
+            isLimit = false;
+        }
+        else 
+        { 
+            isLimit = true;
+        }
+    }
+
+    public void OnDrawGizmos()
+    {
+        if (isLimit)
+        {
+            Gizmos.color = Color.green;
+        }
+        else
+        {
+            Gizmos.color = Color.red;
+        }
+
+        Gizmos.DrawCube(boxDetectionLimitDog.position, sizeBoxDetectionLimitDog);
     }
 
     public void OnTargetPath()
@@ -134,11 +171,25 @@ public class Dog : MonoBehaviour
         switch (currentDogStates)
         {
             case DogStates.SLEEPING:
-                if (isEnterDogDetection)
+                if (dogHasAttacked)
+                {
+                    chronoToAttack += Time.deltaTime;
+                }
+                if (chronoToAttack > timerToAttack)
+                {
+                    dogHasAttacked = false;
+                    chronoToAttack = 0; 
+                }
+
+                if (isEnterDogDetection && mB.isBAL == true)
                 {
                     TransitionToStates(DogStates.GARDE);
                 }
-                if (isStayDogDetection)
+                if (isStayDogDetection && mB.isBAL == true)
+                {
+                    TransitionToStates(DogStates.GARDE);
+                }
+                if (isStayDogDetection && !dogHasAttacked || isEnterDogDetection && !dogHasAttacked)
                 {
                     TransitionToStates(DogStates.GARDE);
                 }
@@ -170,8 +221,9 @@ public class Dog : MonoBehaviour
                     asDog.clip = acDogBark;
                     asDog.Play();
                     TransitionToStates(DogStates.WALKTOGARDE);
+                    dogHasAttacked = true;
                 }
-                if (lD.isLimit)
+                if (isLimit)
                 {
                     TransitionToStates(DogStates.WALKTOGARDE);
                 }
@@ -200,7 +252,7 @@ public class Dog : MonoBehaviour
         {
             case DogStates.SLEEPING:
                 animDog.SetBool("IsSleeping", false);
-                isEnterDogDetection = false; 
+                isEnterDogDetection = false;
                 break;
             case DogStates.GARDE:
                 animDog.SetBool("IsGarde",false);

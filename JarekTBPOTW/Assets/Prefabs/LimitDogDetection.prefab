@@ -10,8 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9016931317066493290}
   - component: {fileID: 4800067401382011424}
-  - component: {fileID: 5485258214327551260}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: LimitDogDetection
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
@@ -76,18 +75,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 12, y: 3}
+  m_Size: {x: 26, y: 3}
   m_EdgeRadius: 0
---- !u!114 &5485258214327551260
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2438348968298237408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bec7a0b6196541144b223f3721905959, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isLimit: 0

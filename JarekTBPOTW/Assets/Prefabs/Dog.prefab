@@ -30,7 +30,8 @@ Transform:
   m_LocalPosition: {x: 0.041, y: 0.381, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3209379912119080453}
   m_Father: {fileID: 7459993161928224008}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &615965794199845899
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 6
-  m_Sprite: {fileID: 148149505, guid: 88ae4da650477454b8089b420fc117e7, type: 3}
+  m_Sprite: {fileID: 1707927885, guid: 88ae4da650477454b8089b420fc117e7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -183,6 +184,37 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 17.5, y: 10}
   m_EdgeRadius: 0
+--- !u!1 &7667710954759579637
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3209379912119080453}
+  m_Layer: 10
+  m_Name: BoxLimitDog
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3209379912119080453
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7667710954759579637}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.0409962, y: -0.381, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3607075843644872238}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8775766652354976798
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,6 +375,12 @@ MonoBehaviour:
   lD: {fileID: 0}
   moveSpeedRTT: 5
   moveSpeedWTG: 4
+  layerLimitDog:
+    serializedVersion: 2
+    m_Bits: 4096
+  boxDetectionLimitDog: {fileID: 3209379912119080453}
+  sizeBoxDetectionLimitDog: {x: 0.1, y: 0.1}
+  isLimit: 0
   isEnterDogDetection: 0
   isExitDogDetection: 0
   isStayDogDetection: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
@@ -22,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     public float buffMoveSpeed;
     public Animator m_Animator;
     public bool isDogged = false;
+    [SerializeField] private bool lookRight;
    
     [Header("SoundEffect")]
     public AudioSource aS;
@@ -51,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
     public bool _canDash = false;
     public TrailRenderer _tRD; 
     private Vector2 dashDir;
+    [SerializeField] private int nbrDashAfterWalljump;
      
     [Header("WallJump")]
     public bool isSlinding;
@@ -59,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 wallJumpForce;
     public float wallJumpDuration;
     public float wallJumpChrono;
+    [SerializeField] private int nrbWalljump;
 
     [Header("Ground Detection")]
     public LayerMask groundLayer;
@@ -250,10 +254,13 @@ public class PlayerMovement : MonoBehaviour
         if (_velocity.x < 0f)
         {
             gameObject.transform.localEulerAngles = new Vector3(0, 180, 0);
+            lookRight = true;
+
         }
         else if (_velocity.x > 0f)
         {
             gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
+            lookRight = false;
         }
     }
     
@@ -281,7 +288,7 @@ public class PlayerMovement : MonoBehaviour
 
         Gizmos.DrawCube(wallCheckerTransformRight.position, wallCheckerSize);
     }
-
+    #region
     public void OnStatesEnter()
     {
         switch (currentStates)
@@ -590,7 +597,22 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case States.DASH:
                 chronoDash += Time.deltaTime;
-                _rb2D.velocity = new Vector2(Mathf.Clamp(dashDir.x, -1, 1), Mathf.Clamp(dashDir.y, -1, 1)) * dashForce;
+                if(dashDir.x == 0f && dashDir.y == 0f)
+                {
+                    if (lookRight)
+                    {
+                        _rb2D.velocity = new Vector2(-1, 0f) * dashForce;
+                    }
+                    else
+                    {
+                        _rb2D.velocity = new Vector2(1, 0f) * dashForce;
+                    }
+                }
+                else
+                {
+                    _rb2D.velocity = new Vector2(Mathf.Clamp(dashDir.x, -1, 1), Mathf.Clamp(dashDir.y, -1, 1)) * dashForce;
+                }
+                
                 if (_isJumped && _isGrounded)
                 {
                     currentSpeed = dashForce;
@@ -715,7 +737,7 @@ public class PlayerMovement : MonoBehaviour
         currentStates = newStates;
         OnStatesEnter();
     }
-
+    #endregion
     public void Move(InputAction.CallbackContext context)
     {
         switch (context.phase)
