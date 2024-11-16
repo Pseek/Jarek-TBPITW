@@ -32,6 +32,12 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip acDash;
     public AudioClip acWallJump;
 
+    [Header("Grimp")]
+    private bool _isGrimping = false;
+    [SerializeField] private float grimpSpeed = 5f;
+    [SerializeField] private float grimpJumpForce = 2f;
+
+
     [Header("Jump")]
     public bool _isFly = false;
     public bool _isJumped = false;
@@ -107,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
 
     public enum States
     {
-        ILDE, RUN, JUMP, DASH, FLY, WALLJUMP, WALLSLIDE, FALL, FALLDUMPSTER
+        ILDE, RUN, JUMP, DASH, FLY, WALLJUMP, WALLSLIDE, FALL, FALLDUMPSTER, GRIMP, GRIMPJUMP
     }
 
     public States currentStates = States.ILDE;
@@ -359,6 +365,14 @@ public class PlayerMovement : MonoBehaviour
                 aS.Play();
                 m_Animator.SetBool("IsFly", true);
                 break;
+            case States.GRIMP:
+                _isJumped = false;
+                currentSpeed = grimpSpeed;
+                _rb2D.gravityScale = 0f;
+                break;
+            case States.GRIMPJUMP:
+                _rb2D.velocity = new Vector2(0f, grimpJumpForce);
+                break;
         }
     }
     public void OnStatesUpdate()
@@ -577,6 +591,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     TransitionToStates(States.FALLDUMPSTER);
                 }
+                if (_isGrimping)
+                {
+                    TransitionToStates(States.GRIMP);
+                }
 
                 break;
             case States.WALLJUMP:
@@ -686,6 +704,40 @@ public class PlayerMovement : MonoBehaviour
                     }
                 }
                 break;
+            case States.GRIMP:
+                if(_direction.y == 0f) 
+                {
+                    _rb2D.velocity = new Vector2(0f, 0f);
+                }
+                if(_direction.y != 0f)
+                {
+                    Debug.Log("je monte ou descaned on sait pas");
+                    _rb2D.velocity = new Vector2(0f, _direction.y) * currentSpeed;
+                }
+
+                if (!_isGrimping)
+                {
+                    TransitionToStates(States.FALL);
+                }
+                if (!_isOnWall)
+                {
+                    TransitionToStates(States.FALL);
+                }
+                if (_isGrimping && _isJumped)
+                {
+                    TransitionToStates(States.GRIMPJUMP);
+                }
+                break;
+            case States.GRIMPJUMP:
+                if(_velocity.y < 0f)
+                {
+                    TransitionToStates(States.FALL);
+                }
+                if (_isOnWall)
+                {
+                    TransitionToStates(States.WALLSLIDE);
+                }
+                break;
         }
     }
     public void OnStatesExit()
@@ -728,6 +780,10 @@ public class PlayerMovement : MonoBehaviour
                 aS.loop = false;
                 aS.Stop();
                 break;
+            case States.GRIMP:
+                break;
+            case States.GRIMPJUMP:
+                break;
         }
     }
 
@@ -760,6 +816,19 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case InputActionPhase.Canceled:
                 _isDashed = false;
+                break;
+        }
+    }
+
+    public void Grimp(InputAction.CallbackContext context)
+    {
+        switch (context.phase)
+        {
+            case InputActionPhase.Performed:
+                _isGrimping = true;
+                break;
+            case InputActionPhase.Canceled:
+                _isGrimping = false;
                 break;
         }
     }

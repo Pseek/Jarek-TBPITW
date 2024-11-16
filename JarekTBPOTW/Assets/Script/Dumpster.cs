@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Dumpster : MonoBehaviour
 {
+    [SerializeField] private GM gM;
+    
     public Sprite fullDumpster;
     public Sprite emptyDumpster;
     public SpriteRenderer spriteRenderer;
@@ -18,6 +20,7 @@ public class Dumpster : MonoBehaviour
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
             spriteRenderer.sprite = emptyDumpster;
             aS.Play();
+            gM.AddTime(gM.penaltyTimeDumpster);    
         }
     }
 }

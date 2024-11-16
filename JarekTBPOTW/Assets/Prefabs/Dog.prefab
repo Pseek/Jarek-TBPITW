@@ -365,6 +365,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce7f501a7996c8468bd7ea2a96ed948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gM: {fileID: 11400000, guid: 5627ebe77504b864c82ddea469d2f717, type: 2}
+  penaltyTimeDog: 5
   mB: {fileID: 0}
   pM: {fileID: 0}
   currentTarget: {fileID: 0}
@@ -372,7 +374,8 @@ MonoBehaviour:
   positionGarde: {fileID: 0}
   animDog: {fileID: 1160770848061272036}
   pTD: {fileID: 0}
-  lD: {fileID: 0}
+  timerToAttack: 3
+  dogHasAttacked: 0
   moveSpeedRTT: 5
   moveSpeedWTG: 4
   layerLimitDog:

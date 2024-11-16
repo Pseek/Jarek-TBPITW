@@ -37,6 +37,7 @@ public class RunCurrent
 [CreateAssetMenu(fileName = "Gamemanager", menuName =("Gm"))]
 public class GM : ScriptableObject
 {
+    
     public RunData rD;
     public TimerList tM;
     public RunCurrent rC;
@@ -47,6 +48,11 @@ public class GM : ScriptableObject
     public bool isStop = false;
     public bool isCheckpoint = false;
     public float elapsedTime;
+    [Header("PenaltyTimer")]
+    public float penaltyTimeDog = 5f;
+    public float penaltyTimeDumpster = 3f;
+    public bool takePenalty = false;
+    public float penaltyTimerForUI;
 
     string filePath = Application.streamingAssetsPath + "/ListTimerEnd.json";
     string filePath2 = Application.streamingAssetsPath + "/ListTimerBAL.json";
@@ -82,6 +88,7 @@ public class GM : ScriptableObject
         isWin = false;
         elapsedTime = 0;
         isStop = false;
+        takePenalty = false;
     }
     
     public void AddBAL(int paper)
@@ -91,7 +98,12 @@ public class GM : ScriptableObject
         rC.listTimerBALCurrent.RemoveAt(i);
         rC.listTimerBALCurrent.Insert(i, elapsedTime);
     }
-
+    public void AddTime(float time)
+    {
+        takePenalty = true;
+        elapsedTime = elapsedTime + time;
+        penaltyTimerForUI = time;
+    }
     public void ChangesScene(string nameScene)
     {
         SceneManager.LoadScene(nameScene);

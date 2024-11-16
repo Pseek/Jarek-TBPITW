@@ -5,6 +5,8 @@ using Pathfinding;
 
 public class Dog : MonoBehaviour
 {
+    [SerializeField] private GM gM;
+    
     public MailBox mB;
     public PlayerMovement pM;
     public Transform currentTarget;
@@ -220,6 +222,7 @@ public class Dog : MonoBehaviour
                 {
                     asDog.clip = acDogBark;
                     asDog.Play();
+                    gM.AddTime(gM.penaltyTimeDog);
                     TransitionToStates(DogStates.WALKTOGARDE);
                     dogHasAttacked = true;
                 }

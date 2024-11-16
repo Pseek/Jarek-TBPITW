@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 
 public class CompareTimeUI : MonoBehaviour
@@ -13,6 +14,12 @@ public class CompareTimeUI : MonoBehaviour
     public float chrono;
     private bool isAffiched = false;
 
+    public Sprite medailleDor;
+    public Sprite medailleDargent;
+    public Sprite medailleBronze;
+    public Sprite medailleNull;
+    public Image medaillePosition;
+
     public void Update()
     {
         chrono += Time.deltaTime;
@@ -20,6 +27,7 @@ public class CompareTimeUI : MonoBehaviour
         {
             chrono = 0f;
             CompareTimer();
+            MedailleOnCheckpoint();
             gM.isCheckpoint = false;
             isAffiched = true;
             tCUI.SetActive(true);   
@@ -30,6 +38,7 @@ public class CompareTimeUI : MonoBehaviour
             chrono = 0f;
             isAffiched = false;
         }
+
 
     }   
     public void CompareTimer()
@@ -73,5 +82,25 @@ public class CompareTimeUI : MonoBehaviour
             gM.rD.listTimerBALData.Insert(gM.nbrBAL_a_D - 1, gM.elapsedTime);
         }
         gM.Save();
+    }
+
+    private void MedailleOnCheckpoint()
+    {
+        if (gM.elapsedTime >= 120f)
+        {
+            medaillePosition.sprite = medailleNull;
+        }
+        else if (gM.elapsedTime >= 90f)
+        {
+            medaillePosition.sprite = medailleBronze;
+        }
+        else if (gM.elapsedTime >= 60f)
+        {
+            medaillePosition.sprite = medailleDargent;
+        }
+        else if (gM.elapsedTime < 60f)
+        {
+            medaillePosition.sprite = medailleDor;
+        }
     }
 }
