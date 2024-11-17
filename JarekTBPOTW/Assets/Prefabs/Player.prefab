@@ -208,6 +208,7 @@ Transform:
   - {fileID: 7111797948599177448}
   - {fileID: 1552005449200729761}
   - {fileID: 4704644521617280091}
+  - {fileID: 2734917154760632387}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &8299716046046751368
@@ -226,7 +227,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1.75
-  m_Material: {fileID: 6200000, guid: caf15dc1ae0452343ba7a8f009cc3efd, type: 2}
+  m_Material: {fileID: 6200000, guid: b20a985baa25eaa42b89d19024b32240, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -257,14 +258,19 @@ MonoBehaviour:
   fallDumpsterSpeed: 2
   canGetUp: 0
   isFallDumpster: 0
-  buffSpeed: 10
+  buffJumpForce: 12.5
+  buffMoveSpeed: 12.5
   m_Animator: {fileID: 1040715973706046072}
   isDogged: 0
+  lookRight: 0
+  superJumpSfxPrefabs: {fileID: 8131846696029208924, guid: 0479ca4b400e05e44be1764d76cd2b3a, type: 3}
+  spawnSuperJump: {fileID: 2734917154760632387}
   aS: {fileID: 5807991066643189098}
   acJump: {fileID: 8300000, guid: a157d0cb38e22fb4892a7ebf33064cca, type: 3}
   acFly: {fileID: 8300000, guid: 30d88c2bac801c846a6ac0832a30ae94, type: 3}
   acDash: {fileID: 8300000, guid: 8fe7cff547d20ff429326bb3b0ba4694, type: 3}
   acWallJump: {fileID: 8300000, guid: 828493144b63db94ebf8fa95ae85946c, type: 3}
+  grimpSpeed: 7.5
   _isFly: 0
   _isJumped: 0
   fallMultiplier: 4
@@ -276,11 +282,13 @@ MonoBehaviour:
   chronoDash: 0
   _canDash: 0
   _tRD: {fileID: 6894772273670787345}
+  nbrDashAfterWalljump: 0
   isSlinding: 0
   wallSlideSpeed: 0.3
   wallJumpForce: {x: 10, y: 15}
   wallJumpDuration: 0.2
   wallJumpChrono: 0
+  nrbWalljump: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -291,10 +299,20 @@ MonoBehaviour:
     m_Bits: 128
   wallCheckerSize: {x: 0.1, y: 1.75}
   wallCheckerTransformRight: {fileID: 7158814444510701625}
+  slopeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  slopeCheckerSize: {x: 1, y: 1}
+  slopeCheckerTransformRight: {fileID: 0}
   moveSpeed: 7.5
   currentSpeed: 0
   decelSpeed: 25
   decelDir: {x: 0, y: 0}
+  slopeCheckDistance: 5
+  maxSlopeAngle: 46
+  zeroF: {fileID: 6200000, guid: 9eeb65653446dc1459e1f8daa85c4514, type: 2}
+  fullF: {fileID: 6200000, guid: b093689f7ba875540b961c5a5d096d21, type: 2}
+  normalF: {fileID: 6200000, guid: 1bc933ca89971534cb5664ed977a4c78, type: 2}
   currentStates: 0
 --- !u!70 &2631645196810559798
 CapsuleCollider2D:
@@ -427,6 +445,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &2434088558461555879
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2734917154760632387}
+  m_Layer: 9
+  m_Name: SpawnSuperJumpVfx
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2734917154760632387
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2434088558461555879}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -1, w: 0}
+  m_LocalPosition: {x: 0, y: -0.75, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1711902987484689702}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2854327609193591332
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Unity.Mathematics;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -24,6 +25,10 @@ public class PlayerMovement : MonoBehaviour
     public Animator m_Animator;
     public bool isDogged = false;
     [SerializeField] private bool lookRight;
+
+    [Header("ParticleSystem")]
+    [SerializeField] private GameObject superJumpSfxPrefabs;
+    [SerializeField] private Transform spawnSuperJump;
    
     [Header("SoundEffect")]
     public AudioSource aS;
@@ -35,8 +40,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("Grimp")]
     private bool _isGrimping = false;
     [SerializeField] private float grimpSpeed = 5f;
-    [SerializeField] private float grimpJumpForce = 2f;
-
 
     [Header("Jump")]
     public bool _isFly = false;
@@ -113,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
 
     public enum States
     {
-        ILDE, RUN, JUMP, DASH, FLY, WALLJUMP, WALLSLIDE, FALL, FALLDUMPSTER, GRIMP, GRIMPJUMP
+        ILDE, RUN, JUMP, DASH, FLY, WALLJUMP, WALLSLIDE, FALL, FALLDUMPSTER, GRIMP
     }
 
     public States currentStates = States.ILDE;
@@ -366,12 +369,10 @@ public class PlayerMovement : MonoBehaviour
                 m_Animator.SetBool("IsFly", true);
                 break;
             case States.GRIMP:
+                m_Animator.SetBool("IsGrimp", true);
                 _isJumped = false;
                 currentSpeed = grimpSpeed;
                 _rb2D.gravityScale = 0f;
-                break;
-            case States.GRIMPJUMP:
-                _rb2D.velocity = new Vector2(0f, grimpJumpForce);
                 break;
         }
     }
@@ -612,6 +613,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     TransitionToStates(States.FALLDUMPSTER);
                 }
+                if(wallJumpChrono > wallJumpDuration && _isOnWall && _isGrimping)
+                {
+                    TransitionToStates(States.WALLSLIDE);   
+                }
                 break;
             case States.DASH:
                 chronoDash += Time.deltaTime;
@@ -633,6 +638,8 @@ public class PlayerMovement : MonoBehaviour
                 
                 if (_isJumped && _isGrounded)
                 {
+                    GameObject superJumpSfx = Instantiate(superJumpSfxPrefabs,spawnSuperJump);
+                    Destroy(superJumpSfx,1.5f);
                     currentSpeed = dashForce;
                     TransitionToStates(States.JUMP);
                 }
@@ -711,31 +718,19 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if(_direction.y != 0f)
                 {
-                    Debug.Log("je monte ou descaned on sait pas");
                     _rb2D.velocity = new Vector2(0f, _direction.y) * currentSpeed;
                 }
-
-                if (!_isGrimping)
-                {
-                    TransitionToStates(States.FALL);
-                }
-                if (!_isOnWall)
+                if (!_isGrimping || !_isOnWall)
                 {
                     TransitionToStates(States.FALL);
                 }
                 if (_isGrimping && _isJumped)
                 {
-                    TransitionToStates(States.GRIMPJUMP);
+                    TransitionToStates(States.WALLJUMP);
                 }
-                break;
-            case States.GRIMPJUMP:
-                if(_velocity.y < 0f)
+                if (isFallDumpster)
                 {
-                    TransitionToStates(States.FALL);
-                }
-                if (_isOnWall)
-                {
-                    TransitionToStates(States.WALLSLIDE);
+                    TransitionToStates(States.FALLDUMPSTER);
                 }
                 break;
         }
@@ -781,8 +776,8 @@ public class PlayerMovement : MonoBehaviour
                 aS.Stop();
                 break;
             case States.GRIMP:
-                break;
-            case States.GRIMPJUMP:
+                m_Animator.SetBool("IsGrimp", false);
+                _rb2D.gravityScale = 1.75f;
                 break;
         }
     }
