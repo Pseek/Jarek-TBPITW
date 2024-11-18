@@ -266,10 +266,11 @@ MonoBehaviour:
   superJumpSfxPrefabs: {fileID: 8131846696029208924, guid: 0479ca4b400e05e44be1764d76cd2b3a, type: 3}
   spawnSuperJump: {fileID: 2734917154760632387}
   aS: {fileID: 5807991066643189098}
-  acJump: {fileID: 8300000, guid: a157d0cb38e22fb4892a7ebf33064cca, type: 3}
+  acJump: {fileID: 8300000, guid: 887554e259a5a324d96af0fac6e0cab7, type: 3}
   acFly: {fileID: 8300000, guid: 30d88c2bac801c846a6ac0832a30ae94, type: 3}
-  acDash: {fileID: 8300000, guid: 8fe7cff547d20ff429326bb3b0ba4694, type: 3}
-  acWallJump: {fileID: 8300000, guid: 828493144b63db94ebf8fa95ae85946c, type: 3}
+  acDash: {fileID: 8300000, guid: 8784ce0aac644d34080f7a393a9403ad, type: 3}
+  acWallJump: {fileID: 8300000, guid: 887554e259a5a324d96af0fac6e0cab7, type: 3}
+  acSuperJump: {fileID: 8300000, guid: fdcc4c88eb3dd8941a5fd2b91121920b, type: 3}
   grimpSpeed: 7.5
   _isFly: 0
   _isJumped: 0
@@ -469,13 +470,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2434088558461555879}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -1, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: -1, w: 0}
   m_LocalPosition: {x: 0, y: -0.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1711902987484689702}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180}
 --- !u!1 &2854327609193591332
 GameObject:
   m_ObjectHideFlags: 0

@@ -36,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip acFly;
     public AudioClip acDash;
     public AudioClip acWallJump;
+    public AudioClip acSuperJump;
 
     [Header("Grimp")]
     private bool _isGrimping = false;
@@ -325,8 +326,16 @@ public class PlayerMovement : MonoBehaviour
                     aS.mute = false;
                 }
                 jumpSpeed = currentSpeed;
-                aS.clip = acJump;
-                aS.Play();
+                if(jumpSpeed == dashForce)
+                {
+                    aS.clip = acSuperJump;
+                    aS.Play();
+                }
+                else
+                {
+                    aS.clip = acJump;
+                    aS.Play();
+                }
                 _isFly = false;
                 m_Animator.SetFloat("VelocityY", 0.1f);
                 _rb2D.velocity = new Vector2(_rb2D.velocity.x, jumpForce);
@@ -503,7 +512,10 @@ public class PlayerMovement : MonoBehaviour
                     _rb2D.velocity = new Vector2(_rb2D.velocity.x, sB.bumperForce);
                     TransitionToStates(States.FALL);
                 }
-
+                if (_isOnWall && _isGrimping)
+                {
+                    TransitionToStates(States.GRIMP);
+                }
                 if (_rb2D.velocity.y < 0f && _isGrounded)
                 {
                     TransitionToStates(States.FALL);
@@ -544,6 +556,10 @@ public class PlayerMovement : MonoBehaviour
                 if (_isOnWall && !_isGrounded && _direction.x != 0)
                 {
                     TransitionToStates(States.WALLSLIDE);
+                }
+                if (_isOnWall && _isGrimping)
+                {
+                    TransitionToStates(States.GRIMP);
                 }
                 if (isFallDumpster)
                 {
@@ -637,8 +653,9 @@ public class PlayerMovement : MonoBehaviour
                 }
                 
                 if (_isJumped && _isGrounded)
-                {
+                {                 
                     GameObject superJumpSfx = Instantiate(superJumpSfxPrefabs,spawnSuperJump);
+                    spawnSuperJump.transform.DetachChildren();
                     Destroy(superJumpSfx,1.5f);
                     currentSpeed = dashForce;
                     TransitionToStates(States.JUMP);
