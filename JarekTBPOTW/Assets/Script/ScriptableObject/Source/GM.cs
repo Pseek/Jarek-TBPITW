@@ -1,13 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System.IO;
-using Unity.VisualScripting;
-using Unity.Collections;
-
 [System.Serializable]
 public class TimerList
 {

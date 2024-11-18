@@ -1,11 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using Cinemachine;
-using Unity.Mathematics;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Windows;
 
 public class PlayerMovement : MonoBehaviour
 {

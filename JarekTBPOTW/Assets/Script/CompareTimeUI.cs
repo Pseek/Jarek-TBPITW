@@ -20,7 +20,7 @@ public class CompareTimeUI : MonoBehaviour
     public Sprite medailleNull;
     public Image medaillePosition;
 
-    public void Update()
+    public void FixedUpdate()
     {
         chrono += Time.deltaTime;
         if (gM.isCheckpoint)
