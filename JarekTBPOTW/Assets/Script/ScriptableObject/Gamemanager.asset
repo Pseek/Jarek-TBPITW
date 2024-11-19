@@ -54,7 +54,7 @@ MonoBehaviour:
   isPause: 0
   isStop: 0
   isCheckpoint: 0
-  elapsedTime: 9.461328
+  elapsedTime: 0
   penaltyTimeDog: 5
   penaltyTimeDumpster: 3
   takePenalty: 0

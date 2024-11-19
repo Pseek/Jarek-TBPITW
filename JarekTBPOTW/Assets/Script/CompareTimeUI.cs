@@ -12,7 +12,6 @@ public class CompareTimeUI : MonoBehaviour
     public TextMeshProUGUI timerCurrentTime;
     public TextMeshProUGUI timercCompareTime;
     public float chrono;
-    private bool isAffiched = false;
 
     public Sprite medailleDor;
     public Sprite medailleDargent;
@@ -29,14 +28,12 @@ public class CompareTimeUI : MonoBehaviour
             CompareTimer();
             MedailleOnCheckpoint();
             gM.isCheckpoint = false;
-            isAffiched = true;
             tCUI.SetActive(true);   
         }
-        if (chrono > 3f && !gM.isCheckpoint && isAffiched)
+        if (chrono > 3f && !gM.isCheckpoint)
         {
             tCUI.SetActive(false);
             chrono = 0f;
-            isAffiched = false;
         }
 
 
